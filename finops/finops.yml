@@ -1,0 +1,116 @@
+name: OpenZeppelin FinOps
+description: >
+  Financial operations guidance for OpenZeppelin products. Defender (the hosted
+  platform) is sunsetting on July 1, 2026; new sign-ups were closed on June 30, 2025.
+  Existing customers should budget for migration to the open-source OpenZeppelin Relayer
+  and OpenZeppelin Monitor, which are self-hosted and carry infrastructure costs rather
+  than subscription fees. The open-source Contracts library and Contracts Wizard are
+  free to use with no associated API costs.
+url: https://docs.openzeppelin.com/defender
+updated: "2026-06-13"
+models:
+  - name: Defender Subscription (Legacy)
+    type: subscription
+    status: sunset
+    sunsetDate: "2026-07-01"
+    description: >
+      OpenZeppelin Defender used a tiered subscription model (Builder/free,
+      Professional/paid, Enterprise/custom). All subscriptions are winding down
+      following the Defender sunset announcement. No new subscriptions are available
+      as of June 30, 2025.
+    tiers:
+      - name: Builder
+        monthlyUSD: 0
+        notes: Free tier for testnet development with limited quotas.
+      - name: Professional
+        monthlyUSD: null
+        contactSales: true
+        notes: >
+          Metered billing with a base subscription fee plus charges for usage
+          above plan thresholds. Exact pricing available from OpenZeppelin sales.
+      - name: Enterprise
+        monthlyUSD: null
+        contactSales: true
+        notes: >
+          Custom pricing negotiated directly with OpenZeppelin based on volume,
+          features, and support requirements.
+  - name: Open Source Self-Hosted
+    type: infrastructure-cost
+    status: active
+    description: >
+      OpenZeppelin Relayer and OpenZeppelin Monitor are open-source and free
+      to use. Operators bear their own infrastructure costs for compute, storage,
+      networking, and any managed services (Redis, AWS SQS, AWS KMS for signing).
+      Cost scales with transaction volume, number of relayers, and monitoring scope.
+    costDrivers:
+      - name: Compute
+        description: >
+          Rust-based services with moderate CPU/memory requirements. A single
+          instance handles up to 100 concurrent requests by default. Scale
+          horizontally using distributed mode (DISTRIBUTED_MODE=true).
+      - name: Queue Backend
+        description: >
+          Choose Redis (self-hosted or managed) or AWS SQS for message queuing.
+          Redis adds ~$50-200/month on managed services (e.g., AWS ElastiCache)
+          for typical workloads. AWS SQS pricing is per million requests.
+        options:
+          - name: Redis
+            estimatedMonthlyUSD: "50-200"
+            notes: Managed Redis on AWS ElastiCache or similar.
+          - name: AWS SQS
+            estimatedMonthlyUSD: "variable"
+            notes: $0.40 per million requests after free tier.
+      - name: Signing Infrastructure
+        description: >
+          For production deployments, transaction signing keys should be managed
+          by a Hardware Security Module (HSM) or cloud KMS service. AWS KMS
+          costs approximately $1/month per key plus $0.03 per 10,000 API calls.
+        estimatedMonthlyUSD: "1-50"
+        notes: >
+          Defender previously managed signing via AWS KMS on the user's behalf.
+          Self-hosted operators must manage their own signing security.
+      - name: RPC Provider
+        description: >
+          The Relayer requires access to blockchain RPC endpoints for each
+          supported network. Operators may use public RPC endpoints (free) or
+          commercial providers (Alchemy, Infura, QuickNode) for production
+          reliability. Weighted load balancing across multiple RPCs is supported.
+        options:
+          - name: Public RPC
+            estimatedMonthlyUSD: "0"
+            notes: Limited reliability; not recommended for production.
+          - name: Commercial RPC (e.g., Alchemy, Infura)
+            estimatedMonthlyUSD: "49-500+"
+            notes: Growth plans start around $49/month; scales with compute units.
+  - name: OpenZeppelin Contracts
+    type: free-open-source
+    status: active
+    description: >
+      OpenZeppelin Contracts is an open-source Solidity library distributed via
+      npm. There is no API cost or subscription fee. Gas costs for deploying
+      contracts using OpenZeppelin libraries are borne by the deploying account
+      on the relevant blockchain network.
+    monthlyCostUSD: 0
+    notes: >
+      Audit costs for custom contracts built on top of OpenZeppelin Contracts
+      are separate and depend on scope. OpenZeppelin offers paid audit services.
+recommendations:
+  - title: Plan Migration from Defender Before Sunset
+    description: >
+      Defender shuts down July 1, 2026. Begin migrating relayer and monitoring
+      workloads to open-source alternatives immediately. Budget for infrastructure
+      setup costs, developer time for migration, and ongoing operational expenses.
+  - title: Consolidate RPC Provider Spend
+    description: >
+      When self-hosting the Relayer, use the weighted RPC load balancing feature
+      to spread load across free and paid endpoints, reducing RPC provider costs
+      while maintaining reliability.
+  - title: Right-Size Compute
+    description: >
+      The default RELAYER_CONCURRENCY_LIMIT of 100 may be higher than needed
+      for low-volume applications. Tune concurrency and rate limits to match
+      actual workload to optimize compute costs.
+  - title: Use Distributed Mode Only When Needed
+    description: >
+      Enabling DISTRIBUTED_MODE adds complexity and Redis/SQS costs. Single-instance
+      deployments are sufficient for most use cases under 50 transactions/minute.

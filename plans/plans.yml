@@ -1,0 +1,106 @@
+name: OpenZeppelin Plans
+description: >
+  OpenZeppelin Defender offered three subscription tiers for its hosted security
+  platform. New sign-ups were disabled on June 30, 2025, and Defender will shut
+  down on July 1, 2026. Users are migrating to the open-source OpenZeppelin Relayer
+  and OpenZeppelin Monitor projects, which are self-hosted and free to use.
+  The open-source projects have no subscription tiers — operators self-host and
+  bear their own infrastructure costs.
+url: https://docs.openzeppelin.com/defender
+plans:
+  - name: Builder
+    description: >
+      Free tier for individuals and small projects developing on testnets.
+      Provides access to core Defender features with limited quotas on relayers,
+      monitors, actions, and proposals. Suitable for prototyping and learning.
+    price: 0
+    currency: USD
+    billingPeriod: monthly
+    features:
+      - Testnet access
+      - Core Defender modules
+      - Limited relayer quota
+      - Limited monitor quota
+      - Limited action runs
+      - Community support
+    rateLimits:
+      - name: API Requests
+        limit: 100
+        unit: requests per second
+        burst: 300
+  - name: Professional
+    description: >
+      Paid tier for mature mainnet projects requiring higher quotas, premium
+      features, SLA-backed support from OpenZeppelin, and metered billing for
+      usage above plan thresholds. Includes access to all Defender modules with
+      production-grade quotas.
+    price: null
+    currency: USD
+    billingPeriod: monthly
+    contactForPricing: true
+    features:
+      - Mainnet access
+      - All Defender modules
+      - Higher relayer quotas
+      - Higher monitor quotas
+      - Metered billing for overages
+      - OpenZeppelin SLA support
+      - Priority incident response
+    rateLimits:
+      - name: API Requests
+        limit: 100
+        unit: requests per second
+        burst: 300
+      - name: Transactions per Relayer
+        limit: 50
+        unit: transactions per minute
+  - name: Enterprise
+    description: >
+      Custom tier for large-scale projects requiring higher transaction volumes,
+      custom quotas, dedicated support, premium security features, and negotiated
+      SLAs. Includes access to advanced features and the ability to request
+      elevated rate limits beyond the standard thresholds.
+    price: null
+    currency: USD
+    billingPeriod: monthly
+    contactForPricing: true
+    features:
+      - All Professional features
+      - Custom quotas
+      - Dedicated support team
+      - Custom SLA negotiation
+      - Higher rate limit requests
+      - Premium security features
+      - Volume discounts
+    rateLimits:
+      - name: API Requests
+        limit: null
+        unit: requests per second
+        notes: Custom limits available on request
+  - name: Open Source (Self-Hosted)
+    description: >
+      The open-source OpenZeppelin Relayer and OpenZeppelin Monitor projects are
+      freely available under open-source licenses. Users self-host the services
+      on their own infrastructure and are responsible for operational costs.
+      Default rate limits are configurable by the operator.
+    price: 0
+    currency: USD
+    billingPeriod: none
+    features:
+      - Full source code access
+      - EVM, Solana, and Stellar support
+      - Configurable rate limits
+      - Redis or AWS SQS queue backends
+      - Distributed mode support
+      - Metrics server
+      - No vendor lock-in
+    rateLimits:
+      - name: API Requests (default)
+        limit: 100
+        unit: requests per second
+        burst: 300
+        notes: Configurable via RATE_LIMIT_REQUESTS_PER_SECOND and RATE_LIMIT_BURST_SIZE
+      - name: Relayer Concurrency (default)
+        limit: 100
+        unit: concurrent requests
+        notes: Configurable via RELAYER_CONCURRENCY_LIMIT

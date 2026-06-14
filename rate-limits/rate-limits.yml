@@ -1,0 +1,78 @@
+name: OpenZeppelin Rate Limits
+description: >
+  Rate limiting details for OpenZeppelin Defender API and the open-source
+  OpenZeppelin Relayer. Defender API enforces per-key rate limits on all
+  authenticated requests. The self-hosted OpenZeppelin Relayer applies
+  configurable rate limits via environment variables, defaulting to 100
+  requests/second with a burst of 300. Exceeding limits returns HTTP 429.
+  Enterprise Defender customers could contact support to request elevated limits.
+url: https://docs.openzeppelin.com/defender/module/relayers
+limits:
+  - name: Defender API - Standard Rate Limit
+    description: >
+      Default rate limit applied to all Defender API keys across the
+      Builder and Professional tiers. Applies to both read and write operations
+      on all Defender modules including Deploy, Relay, Monitor, Action, and Admin.
+    limit: 100
+    unit: requests per second
+    burst: 300
+    scope: per API key
+    tier: Builder, Professional
+    httpStatusOnExceed: 429
+    notes: >
+      Enterprise customers may request higher limits by contacting
+      OpenZeppelin support.
+  - name: Defender Relayer - Transaction Throughput
+    description: >
+      Recommended maximum transaction submission rate per single Relayer instance
+      for chains with fast block times such as Polygon, Optimism, and Arbitrum.
+      For higher throughput requirements, distribute load across multiple relayers.
+    limit: 50
+    unit: transactions per minute
+    scope: per relayer
+    tier: All
+    notes: >
+      For very high throughput use cases, deploy multiple relayers and distribute
+      transactions via load balancing. The Defender platform manages nonce ordering
+      automatically across concurrent submissions.
+  - name: Defender API - JWT Token Expiry
+    description: >
+      Defender API authentication tokens are short-lived JWTs negotiated via
+      SRP protocol. Tokens expire after 60 minutes and must be refreshed using
+      optional refresh tokens to maintain session continuity.
+    limit: 60
+    unit: minutes per token
+    scope: per session
+    tier: All
+    notes: >
+      Optional refresh tokens can extend sessions. Expired tokens return an
+      error response requiring re-authentication.
+  - name: Relayer (Open Source) - Requests Per Second
+    description: >
+      Default rate limit for the self-hosted OpenZeppelin Relayer open-source
+      project. Configurable via the RATE_LIMIT_REQUESTS_PER_SECOND environment
+      variable. Returns HTTP 429 when the limit is exceeded.
+    limit: 100
+    unit: requests per second
+    burst: 300
+    scope: per server instance
+    tier: Open Source (Self-Hosted)
+    httpStatusOnExceed: 429
+    configuration:
+      envVar: RATE_LIMIT_REQUESTS_PER_SECOND
+      burstEnvVar: RATE_LIMIT_BURST_SIZE
+      defaultValue: 100
+      burstDefaultValue: 300
+  - name: Relayer (Open Source) - Concurrency Limit
+    description: >
+      Maximum number of simultaneous in-flight requests to relayer endpoints
+      in the self-hosted OpenZeppelin Relayer. Requests exceeding this limit
+      receive an HTTP 429 response. Configurable via environment variable.
+    limit: 100
+    unit: concurrent requests
+    scope: per server instance
+    tier: Open Source (Self-Hosted)
+    httpStatusOnExceed: 429
+    configuration:
+      envVar: RELAYER_CONCURRENCY_LIMIT
+      defaultValue: 100
