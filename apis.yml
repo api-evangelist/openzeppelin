@@ -94,6 +94,8 @@ apis:
         url: https://docs.openzeppelin.com/relayer
       - type: OpenAPI
         url: https://docs.openzeppelin.com/relayer/1.4.x/api
+      - type: OpenAPISpec
+        url: https://raw.githubusercontent.com/api-evangelist/openzeppelin/main/openapi/openzeppelin-relayer-openapi.json
       - type: GitHubRepository
         url: https://github.com/OpenZeppelin/openzeppelin-relayer
       - type: SDKs

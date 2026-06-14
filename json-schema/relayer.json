@@ -1,0 +1,90 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/openzeppelin/main/json-schema/relayer.json",
+  "title": "RelayerResponse",
+  "description": "Represents an OpenZeppelin Relayer instance for managing blockchain transactions across EVM, Solana, and Stellar networks.",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Unique identifier for the relayer"
+    },
+    "name": {
+      "type": "string",
+      "description": "Human-readable name for the relayer"
+    },
+    "network": {
+      "type": "string",
+      "description": "Blockchain network identifier (e.g., mainnet, goerli, solana-mainnet)"
+    },
+    "network_type": {
+      "type": "string",
+      "enum": ["evm", "solana", "stellar"],
+      "description": "Type of blockchain network"
+    },
+    "address": {
+      "type": "string",
+      "description": "On-chain address associated with the relayer"
+    },
+    "paused": {
+      "type": "boolean",
+      "description": "Whether the relayer is currently paused"
+    },
+    "policy": {
+      "$ref": "#/definitions/RelayerPolicy",
+      "description": "Transaction policy configuration for the relayer"
+    },
+    "signer_id": {
+      "type": "string",
+      "description": "Reference to the signer used by this relayer"
+    },
+    "notification_id": {
+      "type": ["string", "null"],
+      "description": "Optional reference to a notification channel"
+    },
+    "system_type": {
+      "type": "string",
+      "description": "Internal system type identifier"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Timestamp when the relayer was created"
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Timestamp when the relayer was last updated"
+    }
+  },
+  "required": ["id", "name", "network", "network_type", "address", "paused"],
+  "definitions": {
+    "RelayerPolicy": {
+      "type": "object",
+      "description": "Policy settings controlling relayer transaction behavior",
+      "properties": {
+        "gas_price_cap": {
+          "type": ["integer", "null"],
+          "description": "Maximum gas price in wei the relayer will accept"
+        },
+        "whitelist_receivers": {
+          "type": ["array", "null"],
+          "items": { "type": "string" },
+          "description": "List of allowed recipient addresses"
+        },
+        "eip1559_pricing": {
+          "type": ["boolean", "null"],
+          "description": "Whether to use EIP-1559 pricing"
+        },
+        "private_transactions": {
+          "type": ["boolean", "null"],
+          "description": "Whether to use private/dark-pool transaction submission"
+        },
+        "min_balance": {
+          "type": ["integer", "null"],
+          "description": "Minimum relayer balance threshold in wei"
+        }
+      }
+    }
+  }
+}

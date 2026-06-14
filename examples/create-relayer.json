@@ -1,0 +1,55 @@
+{
+  "title": "Create a New Relayer",
+  "description": "Example of creating a new relayer instance in the OpenZeppelin Relayer API for EVM transaction management.",
+  "request": {
+    "method": "POST",
+    "url": "http://localhost:8080/api/v1/relayers",
+    "headers": {
+      "Authorization": "Bearer {api_key}",
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "name": "My EVM Relayer",
+      "network": "mainnet",
+      "network_type": "evm",
+      "signer": {
+        "type": "local",
+        "config": {}
+      },
+      "notification_id": null,
+      "policies": {
+        "gas_price_cap": 100000000000,
+        "whitelist_receivers": [],
+        "eip1559_pricing": true,
+        "private_transactions": false,
+        "min_balance": 100000000000000000
+      }
+    }
+  },
+  "response": {
+    "status": 201,
+    "body": {
+      "success": true,
+      "data": {
+        "id": "relayer-uuid-5678",
+        "name": "My EVM Relayer",
+        "network": "mainnet",
+        "network_type": "evm",
+        "address": "0xGeneratedRelayerAddress",
+        "paused": false,
+        "policy": {
+          "gas_price_cap": 100000000000,
+          "whitelist_receivers": [],
+          "eip1559_pricing": true,
+          "private_transactions": false,
+          "min_balance": 100000000000000000
+        },
+        "signer_id": "signer-uuid-9012",
+        "notification_id": null,
+        "created_at": "2026-06-13T10:00:00Z",
+        "updated_at": "2026-06-13T10:00:00Z"
+      },
+      "message": "Relayer created successfully"
+    }
+  }
+}

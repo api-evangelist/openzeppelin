@@ -1,0 +1,17 @@
+{
+  "title": "Health Check",
+  "description": "Example of checking the health status of an OpenZeppelin Relayer instance.",
+  "request": {
+    "method": "GET",
+    "url": "http://localhost:8080/api/v1/health",
+    "headers": {}
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "success": true,
+      "data": "Alive",
+      "message": "Service is healthy"
+    }
+  }
+}

@@ -1,0 +1,117 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "OpenZeppelin API Vocabulary",
+  "description": "Domain vocabulary for the OpenZeppelin Web3 security platform, covering Defender, Relayer, Monitor, and Contracts concepts.",
+  "version": "1.0.0",
+  "source": "https://docs.openzeppelin.com/",
+  "terms": [
+    {
+      "term": "Relayer",
+      "definition": "A service that manages blockchain transaction submission, nonce management, gas estimation, and retries on behalf of decentralized applications. Supports EVM, Solana, and Stellar networks.",
+      "category": "Core",
+      "related": ["Signer", "Transaction", "GasPolicy"]
+    },
+    {
+      "term": "Defender",
+      "definition": "OpenZeppelin's cloud-based developer security platform (sunsetting July 1, 2026) providing auditing, deployment, monitoring, and automation tools for smart contracts. Users are migrating to the open-source Relayer and Monitor.",
+      "category": "Platform",
+      "related": ["RelayerAPI", "MonitorAPI", "Action"]
+    },
+    {
+      "term": "Monitor",
+      "definition": "An open-source blockchain monitoring service that watches for specific on-chain activities (function calls, events, transaction patterns) and triggers notifications via Slack, Discord, Email, Telegram, Webhooks, or custom scripts.",
+      "category": "Core",
+      "related": ["Notification", "MatchCondition", "Network"]
+    },
+    {
+      "term": "Signer",
+      "definition": "A cryptographic key management component responsible for signing transactions and data. Supports Local (HSM/file), AWS KMS, Google Cloud KMS, Vault (HashiCorp), Turnkey, and CDP signer backends.",
+      "category": "Security",
+      "related": ["Relayer", "Transaction", "KMS"]
+    },
+    {
+      "term": "SmartContract",
+      "definition": "Self-executing code deployed on a blockchain network that automatically enforces agreement terms. OpenZeppelin Contracts provides battle-tested, audited Solidity implementations of common contract patterns.",
+      "category": "Blockchain",
+      "related": ["Solidity", "ERC20", "ERC721", "Proxy"]
+    },
+    {
+      "term": "ERC-20",
+      "definition": "Ethereum token standard defining a fungible token interface with transfer, approval, and allowance mechanisms. Implemented in OpenZeppelin Contracts.",
+      "category": "Standards",
+      "related": ["ERC-721", "ERC-1155", "Token"]
+    },
+    {
+      "term": "ERC-721",
+      "definition": "Ethereum non-fungible token (NFT) standard defining unique, non-interchangeable tokens with ownership and transfer mechanics. Implemented in OpenZeppelin Contracts.",
+      "category": "Standards",
+      "related": ["ERC-20", "ERC-1155", "NFT"]
+    },
+    {
+      "term": "ERC-1155",
+      "definition": "Ethereum multi-token standard allowing a single contract to manage multiple fungible and non-fungible token types efficiently. Implemented in OpenZeppelin Contracts.",
+      "category": "Standards",
+      "related": ["ERC-20", "ERC-721", "Token"]
+    },
+    {
+      "term": "GaslessTransaction",
+      "definition": "A blockchain transaction where the end-user does not pay gas fees directly; instead, a relayer or meta-transaction system sponsors the gas costs, improving user experience.",
+      "category": "Transaction",
+      "related": ["Relayer", "MetaTransaction", "SponsoredTransaction"]
+    },
+    {
+      "term": "SponsoredTransaction",
+      "definition": "A transaction where gas fees are paid by a third party (sponsor/relayer) rather than the transaction originator. The OpenZeppelin Relayer API supports building and quoting sponsored transactions.",
+      "category": "Transaction",
+      "related": ["GaslessTransaction", "Relayer", "Plugin"]
+    },
+    {
+      "term": "ProxyPattern",
+      "definition": "A smart contract design pattern that separates storage from logic, enabling upgradeable contracts. OpenZeppelin Contracts implements transparent proxy, UUPS, and beacon proxy patterns.",
+      "category": "Patterns",
+      "related": ["UpgradeableContract", "Implementation", "Admin"]
+    },
+    {
+      "term": "AccessControl",
+      "definition": "A mechanism for defining and enforcing role-based permissions in smart contracts. OpenZeppelin Contracts provides Ownable, AccessControl, and TimelockController implementations.",
+      "category": "Security",
+      "related": ["Role", "Permission", "Ownable"]
+    },
+    {
+      "term": "ReentrancyGuard",
+      "definition": "A security pattern preventing reentrant calls to a function during its execution. OpenZeppelin Contracts provides the ReentrancyGuard modifier to protect against reentrancy attacks.",
+      "category": "Security",
+      "related": ["SmartContract", "Vulnerability", "Audit"]
+    },
+    {
+      "term": "NetworkType",
+      "definition": "Classification of blockchain networks supported by OpenZeppelin tools: EVM (Ethereum Virtual Machine compatible chains), Solana, and Stellar.",
+      "category": "Network",
+      "related": ["EVM", "Solana", "Stellar", "ChainId"]
+    },
+    {
+      "term": "EIP-1559",
+      "definition": "Ethereum Improvement Proposal 1559 introducing a base fee mechanism for gas pricing with optional priority tips. The OpenZeppelin Relayer supports EIP-1559 transaction pricing.",
+      "category": "Standards",
+      "related": ["GasPrice", "MaxFeePerGas", "PriorityFee"]
+    },
+    {
+      "term": "Plugin",
+      "definition": "An extension mechanism in the OpenZeppelin Relayer that adds custom functionality (e.g., Jupiter swap on Solana, transfer operations) via configurable call routing.",
+      "category": "Extension",
+      "related": ["Relayer", "CallPlugin", "SolanaSwap"]
+    },
+    {
+      "term": "JWT",
+      "definition": "JSON Web Token used for authentication in the OpenZeppelin Defender API. Tokens are short-lived and negotiated via SRP protocol through Amazon Cognito.",
+      "category": "Authentication",
+      "related": ["SRP", "Cognito", "APIKey"]
+    },
+    {
+      "term": "AuditReport",
+      "definition": "A formal security assessment of smart contract code produced by OpenZeppelin's security audit team. OpenZeppelin has audited many of the most critical DeFi and Web3 protocols.",
+      "category": "Security",
+      "related": ["SmartContract", "Vulnerability", "SecurityReview"]
+    }
+  ]
+}

@@ -1,0 +1,89 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/openzeppelin/main/json-schema/transaction.json",
+  "title": "TransactionResponse",
+  "description": "Represents a blockchain transaction submitted through the OpenZeppelin Relayer, supporting EVM, Solana, and Stellar networks.",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Unique identifier for the transaction within the relayer"
+    },
+    "hash": {
+      "type": ["string", "null"],
+      "description": "On-chain transaction hash (null if not yet submitted)"
+    },
+    "status": {
+      "type": "string",
+      "enum": ["pending", "sent", "submitted", "mined", "confirmed", "failed", "expired"],
+      "description": "Current status of the transaction"
+    },
+    "from": {
+      "type": "string",
+      "description": "Sender address"
+    },
+    "to": {
+      "type": ["string", "null"],
+      "description": "Recipient address (null for contract creation)"
+    },
+    "value": {
+      "type": ["string", "null"],
+      "description": "Value transferred in the transaction (in wei for EVM)"
+    },
+    "data": {
+      "type": ["string", "null"],
+      "description": "Encoded calldata for the transaction"
+    },
+    "nonce": {
+      "type": ["integer", "null"],
+      "description": "Transaction nonce (EVM)"
+    },
+    "gas_price": {
+      "type": ["string", "null"],
+      "description": "Gas price in wei (legacy transactions)"
+    },
+    "gas_limit": {
+      "type": ["integer", "null"],
+      "description": "Gas limit for the transaction"
+    },
+    "max_fee_per_gas": {
+      "type": ["string", "null"],
+      "description": "Maximum fee per gas unit (EIP-1559)"
+    },
+    "max_priority_fee_per_gas": {
+      "type": ["string", "null"],
+      "description": "Maximum priority fee per gas unit (EIP-1559)"
+    },
+    "chain_id": {
+      "type": ["integer", "null"],
+      "description": "Chain ID of the target network"
+    },
+    "speed": {
+      "type": ["string", "null"],
+      "enum": ["safeLow", "average", "fast", "fastest", null],
+      "description": "Desired transaction speed tier"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Timestamp when the transaction was created"
+    },
+    "sent_at": {
+      "type": ["string", "null"],
+      "format": "date-time",
+      "description": "Timestamp when the transaction was sent to the network"
+    },
+    "confirmed_at": {
+      "type": ["string", "null"],
+      "format": "date-time",
+      "description": "Timestamp when the transaction was confirmed"
+    },
+    "valid_until": {
+      "type": ["string", "null"],
+      "format": "date-time",
+      "description": "Deadline after which the transaction expires"
+    }
+  },
+  "required": ["id", "status", "from"],
+  "definitions": {}
+}
