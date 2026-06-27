@@ -2,6 +2,13 @@
   "repo": "openzeppelin",
   "feeds": [
     {
+      "source": "https://www.openzeppelin.com/news/rss.xml",
+      "feed_url": "https://www.openzeppelin.com/news/rss.xml",
+      "title": "",
+      "saved": 2,
+      "method": "feed"
+    },
+    {
       "source": "https://github.com/OpenZeppelin",
       "feed_url": "https://github.com/OpenZeppelin",
       "title": "",
@@ -9,6 +16,6 @@
       "method": "none"
     }
   ],
-  "post_count": 0,
-  "fetched": "2026-06-14T20:42:17Z"
+  "post_count": 4,
+  "fetched": "2026-06-27T12:03:07Z"
 }

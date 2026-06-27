@@ -136,7 +136,7 @@ apis:
     properties:
       - type: Documentation
         url: https://docs.openzeppelin.com/monitor
-      - type: QuickStart
+      - type: GettingStarted
         url: https://docs.openzeppelin.com/monitor/quickstart
       - type: GitHubRepository
         url: https://github.com/OpenZeppelin/openzeppelin-monitor
@@ -194,7 +194,7 @@ common:
     url: https://www.openzeppelin.com/
   - type: Documentation
     url: https://docs.openzeppelin.com/
-  - type: Forum
+  - type: Forums
     url: https://forum.openzeppelin.com/
   - type: GitHub
     url: https://github.com/OpenZeppelin
