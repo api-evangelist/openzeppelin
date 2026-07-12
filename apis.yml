@@ -190,6 +190,12 @@ apis:
         url: https://forum.openzeppelin.com/
         email: ""
 common:
+  - type: TrustCenter
+    url: security/openzeppelin-trust-center.yml
+  - type: DomainSecurity
+    url: security/openzeppelin-domain-security.yml
+  - type: Authentication
+    url: authentication/openzeppelin-authentication.yml
   - type: Website
     url: https://www.openzeppelin.com/
   - type: Documentation

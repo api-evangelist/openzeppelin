@@ -1,0 +1,14 @@
+generated: '2026-07-11'
+method: searched
+probe: true
+source: https://trust.openzeppelin.com/
+url: https://trust.openzeppelin.com/
+certifications:
+- SOC 2
+- ISO 27001
+evidence:
+- source: https://trust.openzeppelin.com/
+  keywords:
+  - soc 2
+  - iso/iec 27001
+  - trust center
