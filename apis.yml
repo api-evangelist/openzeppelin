@@ -190,6 +190,8 @@ apis:
         url: https://forum.openzeppelin.com/
         email: ""
 common:
+  - type: AgenticAccess
+    url: agentic-access/openzeppelin-agentic-access.yml
   - type: TrustCenter
     url: security/openzeppelin-trust-center.yml
   - type: DomainSecurity
