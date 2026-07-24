@@ -1,0 +1,111 @@
+openapi: 3.1.0
+info:
+  title: OpenZeppelin Relayer Health Metrics API
+  description: OpenZeppelin Relayer API
+  termsOfService: https://www.openzeppelin.com/tos
+  contact:
+    name: OpenZeppelin
+    url: https://www.openzeppelin.com
+  license:
+    name: AGPL-3.0 license
+    url: https://github.com/OpenZeppelin/openzeppelin-relayer/blob/main/LICENSE
+  version: 1.5.0
+tags:
+- name: Metrics
+  description: Metrics are responsible for showing the metrics related to the relayers.
+paths:
+  /debug/metrics/scrape:
+    get:
+      tags:
+      - Metrics
+      summary: Triggers an update of system metrics and returns the result in plain text format.
+      description: '# Returns
+
+
+        An `HttpResponse` containing the updated metrics in plain text, or an error message if the
+
+        update fails.'
+      operationId: scrape_metrics
+      responses:
+        '200':
+          description: Complete metrics in Prometheus exposition format
+          content:
+            text/plain:
+              schema:
+                type: string
+        '401':
+          description: Unauthorized
+  /metrics:
+    get:
+      tags:
+      - Metrics
+      summary: Metrics routes implementation
+      description: 'Note: OpenAPI documentation for these endpoints can be found in the `openapi.rs` file
+
+        Returns a list of all available metric names in JSON format.
+
+
+        # Returns
+
+
+        An `HttpResponse` containing a JSON array of metric names.'
+      operationId: list_metrics
+      responses:
+        '200':
+          description: Metric names list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+        '401':
+          description: Unauthorized
+  /metrics/{metric_name}:
+    get:
+      tags:
+      - Metrics
+      summary: Returns the details of a specific metric in plain text format.
+      description: '# Parameters
+
+
+        - `path`: The name of the metric to retrieve details for.
+
+
+        # Returns
+
+
+        An `HttpResponse` containing the metric details in plain text, or a 404 error if the metric is
+
+        not found.'
+      operationId: metric_detail
+      parameters:
+      - name: metric_name
+        in: path
+        description: Name of the metric to retrieve, e.g. utopia_transactions_total
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Metric details in Prometheus text format
+          content:
+            text/plain:
+              schema:
+                type: string
+        '401':
+          description: Unauthorized - missing or invalid API key
+        '403':
+          description: Forbidden - insufficient permissions to access this metric
+        '404':
+          description: Metric not found
+        '429':
+          description: Too many requests - rate limit for metrics access exceeded
+      security:
+      - bearer_auth:
+        - metrics:read
+components:
+  securitySchemes:
+    bearer_auth:
+      type: http
+      scheme: bearer

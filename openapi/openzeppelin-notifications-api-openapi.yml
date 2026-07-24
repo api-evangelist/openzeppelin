@@ -1,0 +1,512 @@
+openapi: 3.1.0
+info:
+  title: OpenZeppelin Relayer Health Notifications API
+  description: OpenZeppelin Relayer API
+  termsOfService: https://www.openzeppelin.com/tos
+  contact:
+    name: OpenZeppelin
+    url: https://www.openzeppelin.com
+  license:
+    name: AGPL-3.0 license
+    url: https://github.com/OpenZeppelin/openzeppelin-relayer/blob/main/LICENSE
+  version: 1.5.0
+tags:
+- name: Notifications
+  description: Notifications are responsible for showing the notifications related to the relayers.
+paths:
+  /api/v1/notifications:
+    get:
+      tags:
+      - Notifications
+      summary: Notification routes implementation
+      description: 'Note: OpenAPI documentation for these endpoints can be found in the `openapi.rs` file
+
+
+        Lists all notifications with pagination support.'
+      operationId: listNotifications
+      parameters:
+      - name: page
+        in: query
+        description: Page number for pagination (starts at 1)
+        required: false
+        schema:
+          type: integer
+          minimum: 0
+      - name: per_page
+        in: query
+        description: 'Number of items per page (default: 10)'
+        required: false
+        schema:
+          type: integer
+          minimum: 0
+      responses:
+        '200':
+          description: Notification list retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse_Vec_NotificationResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse_String'
+              example:
+                data: null
+                message: Bad Request
+                success: false
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse_String'
+              example:
+                data: null
+                message: Unauthorized
+                success: false
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse_String'
+              example:
+                data: null
+                message: Internal Server Error
+                success: false
+      security:
+      - bearer_auth: []
+    post:
+      tags:
+      - Notifications
+      summary: Creates a new notification.
+      operationId: createNotification
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NotificationCreateRequest'
+        required: true
+      responses:
+        '201':
+          description: Notification created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse_NotificationResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse_String'
+              example:
+                data: null
+                message: Bad Request
+                success: false
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse_String'
+              example:
+                data: null
+                message: Unauthorized
+                success: false
+        '409':
+          description: Notification with this ID already exists
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse_String'
+              example:
+                data: null
+                message: Notification with this ID already exists
+                success: false
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse_String'
+              example:
+                data: null
+                message: Internal Server Error
+                success: false
+      security:
+      - bearer_auth: []
+  /api/v1/notifications/{notification_id}:
+    get:
+      tags:
+      - Notifications
+      summary: Retrieves details of a specific notification by ID.
+      operationId: getNotification
+      parameters:
+      - name: notification_id
+        in: path
+        description: Notification ID
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Notification retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse_NotificationResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse_String'
+              example:
+                data: null
+                message: Bad Request
+                success: false
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse_String'
+              example:
+                data: null
+                message: Unauthorized
+                success: false
+        '404':
+          description: Notification not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse_String'
+              example:
+                data: null
+                message: Notification not found
+                success: false
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse_String'
+              example:
+                data: null
+                message: Internal Server Error
+                success: false
+      security:
+      - bearer_auth: []
+    delete:
+      tags:
+      - Notifications
+      summary: Deletes a notification by ID.
+      operationId: deleteNotification
+      parameters:
+      - name: notification_id
+        in: path
+        description: Notification ID
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Notification deleted successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse_String'
+              example:
+                data: Notification deleted successfully
+                message: Notification deleted successfully
+                success: true
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse_String'
+              example:
+                data: null
+                message: Bad Request
+                success: false
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse_String'
+              example:
+                data: null
+                message: Unauthorized
+                success: false
+        '404':
+          description: Notification not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse_String'
+              example:
+                data: null
+                message: Notification not found
+                success: false
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse_String'
+              example:
+                data: null
+                message: Internal Server Error
+                success: false
+      security:
+      - bearer_auth: []
+    patch:
+      tags:
+      - Notifications
+      summary: Updates an existing notification.
+      operationId: updateNotification
+      parameters:
+      - name: notification_id
+        in: path
+        description: Notification ID
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NotificationUpdateRequest'
+        required: true
+      responses:
+        '200':
+          description: Notification updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse_NotificationResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse_String'
+              example:
+                data: null
+                message: Bad Request
+                success: false
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse_String'
+              example:
+                data: null
+                message: Unauthorized
+                success: false
+        '404':
+          description: Notification not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse_String'
+              example:
+                data: null
+                message: Notification not found
+                success: false
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse_String'
+              example:
+                data: null
+                message: Internal Server Error
+                success: false
+      security:
+      - bearer_auth: []
+components:
+  schemas:
+    LogEntry:
+      type: object
+      required:
+      - level
+      - message
+      properties:
+        level:
+          $ref: '#/components/schemas/LogLevel'
+        message:
+          type: string
+    PluginMetadata:
+      type: object
+      properties:
+        logs:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/LogEntry'
+        traces:
+          type:
+          - array
+          - 'null'
+          items: {}
+    NotificationType:
+      type: string
+      description: Notification type enum used by both config file and API
+      enum:
+      - webhook
+    NotificationUpdateRequest:
+      type: object
+      description: Request structure for updating an existing notification
+      properties:
+        signing_key:
+          type:
+          - string
+          - 'null'
+          description: 'Optional signing key for securing webhook notifications.
+
+            - None: don''t change the existing signing key
+
+            - Some(""): remove the signing key
+
+            - Some("key"): set the signing key to the provided value'
+        type:
+          $ref: '#/components/schemas/NotificationType'
+        url:
+          type: string
+      additionalProperties: false
+    ApiResponse_Vec_NotificationResponse:
+      type: object
+      required:
+      - success
+      properties:
+        data:
+          type: array
+          items:
+            type: object
+            description: Response structure for notification API endpoints
+            required:
+            - id
+            - type
+            - url
+            - has_signing_key
+            properties:
+              has_signing_key:
+                type: boolean
+                description: Signing key is hidden in responses for security
+              id:
+                type: string
+              type:
+                $ref: '#/components/schemas/NotificationType'
+              url:
+                type: string
+        error:
+          type: string
+        metadata:
+          $ref: '#/components/schemas/PluginMetadata'
+        pagination:
+          $ref: '#/components/schemas/PaginationMeta'
+        success:
+          type: boolean
+    LogLevel:
+      type: string
+      enum:
+      - log
+      - info
+      - error
+      - warn
+      - debug
+      - result
+    ApiResponse_NotificationResponse:
+      type: object
+      required:
+      - success
+      properties:
+        data:
+          type: object
+          description: Response structure for notification API endpoints
+          required:
+          - id
+          - type
+          - url
+          - has_signing_key
+          properties:
+            has_signing_key:
+              type: boolean
+              description: Signing key is hidden in responses for security
+            id:
+              type: string
+            type:
+              $ref: '#/components/schemas/NotificationType'
+            url:
+              type: string
+        error:
+          type: string
+        metadata:
+          $ref: '#/components/schemas/PluginMetadata'
+        pagination:
+          $ref: '#/components/schemas/PaginationMeta'
+        success:
+          type: boolean
+    NotificationCreateRequest:
+      type: object
+      description: Request structure for creating a new notification
+      required:
+      - url
+      properties:
+        id:
+          type: string
+        signing_key:
+          type: string
+          description: Optional signing key for securing webhook notifications
+        type:
+          $ref: '#/components/schemas/NotificationType'
+        url:
+          type: string
+      additionalProperties: false
+    PaginationMeta:
+      type: object
+      required:
+      - current_page
+      - per_page
+      - total_items
+      properties:
+        current_page:
+          type: integer
+          format: int32
+          minimum: 0
+        per_page:
+          type: integer
+          format: int32
+          minimum: 0
+        total_items:
+          type: integer
+          format: int64
+          minimum: 0
+    ApiResponse_String:
+      type: object
+      required:
+      - success
+      properties:
+        data:
+          type: string
+        error:
+          type: string
+        metadata:
+          $ref: '#/components/schemas/PluginMetadata'
+        pagination:
+          $ref: '#/components/schemas/PaginationMeta'
+        success:
+          type: boolean
+  securitySchemes:
+    bearer_auth:
+      type: http
+      scheme: bearer

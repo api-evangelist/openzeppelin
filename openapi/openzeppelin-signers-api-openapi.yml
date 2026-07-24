@@ -1,0 +1,826 @@
+openapi: 3.1.0
+info:
+  title: OpenZeppelin Relayer Health Signers API
+  description: OpenZeppelin Relayer API
+  termsOfService: https://www.openzeppelin.com/tos
+  contact:
+    name: OpenZeppelin
+    url: https://www.openzeppelin.com
+  license:
+    name: AGPL-3.0 license
+    url: https://github.com/OpenZeppelin/openzeppelin-relayer/blob/main/LICENSE
+  version: 1.5.0
+tags:
+- name: Signers
+  description: Signers are responsible for signing the transactions related to the relayers.
+paths:
+  /api/v1/signers:
+    get:
+      tags:
+      - Signers
+      summary: Signer routes implementation
+      description: 'Note: OpenAPI documentation for these endpoints can be found in the `openapi.rs` file
+
+
+        Lists all signers with pagination support.'
+      operationId: listSigners
+      parameters:
+      - name: page
+        in: query
+        description: Page number for pagination (starts at 1)
+        required: false
+        schema:
+          type: integer
+          minimum: 0
+      - name: per_page
+        in: query
+        description: 'Number of items per page (default: 10)'
+        required: false
+        schema:
+          type: integer
+          minimum: 0
+      responses:
+        '200':
+          description: Signer list retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse_Vec_SignerResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse_String'
+              example:
+                data: null
+                message: Bad Request
+                success: false
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse_String'
+              example:
+                data: null
+                message: Unauthorized
+                success: false
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse_String'
+              example:
+                data: null
+                message: Internal Server Error
+                success: false
+      security:
+      - bearer_auth: []
+    post:
+      tags:
+      - Signers
+      summary: Creates a new signer.
+      operationId: createSigner
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SignerCreateRequest'
+        required: true
+      responses:
+        '201':
+          description: Signer created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse_SignerResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse_String'
+              example:
+                data: null
+                message: Bad Request
+                success: false
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse_String'
+              example:
+                data: null
+                message: Unauthorized
+                success: false
+        '409':
+          description: Signer with this ID already exists
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse_String'
+              example:
+                data: null
+                message: Signer with this ID already exists
+                success: false
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse_String'
+              example:
+                data: null
+                message: Internal Server Error
+                success: false
+      security:
+      - bearer_auth: []
+  /api/v1/signers/{signer_id}:
+    get:
+      tags:
+      - Signers
+      summary: Retrieves details of a specific signer by ID.
+      operationId: getSigner
+      parameters:
+      - name: signer_id
+        in: path
+        description: Signer ID
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Signer retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse_SignerResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse_String'
+              example:
+                data: null
+                message: Bad Request
+                success: false
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse_String'
+              example:
+                data: null
+                message: Unauthorized
+                success: false
+        '404':
+          description: Signer not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse_String'
+              example:
+                data: null
+                message: Signer not found
+                success: false
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse_String'
+              example:
+                data: null
+                message: Internal Server Error
+                success: false
+      security:
+      - bearer_auth: []
+    delete:
+      tags:
+      - Signers
+      summary: Deletes a signer by ID.
+      operationId: deleteSigner
+      parameters:
+      - name: signer_id
+        in: path
+        description: Signer ID
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Signer deleted successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse_String'
+              example:
+                data: Signer deleted successfully
+                message: Signer deleted successfully
+                success: true
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse_String'
+              example:
+                data: null
+                message: Bad Request
+                success: false
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse_String'
+              example:
+                data: null
+                message: Unauthorized
+                success: false
+        '404':
+          description: Signer not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse_String'
+              example:
+                data: null
+                message: Signer not found
+                success: false
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse_String'
+              example:
+                data: null
+                message: Internal Server Error
+                success: false
+      security:
+      - bearer_auth: []
+    patch:
+      tags:
+      - Signers
+      summary: Updates an existing signer.
+      operationId: updateSigner
+      parameters:
+      - name: signer_id
+        in: path
+        description: Signer ID
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SignerUpdateRequest'
+        required: true
+      responses:
+        '200':
+          description: Signer updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse_SignerResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse_String'
+              example:
+                data: null
+                message: Bad Request
+                success: false
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse_String'
+              example:
+                data: null
+                message: Unauthorized
+                success: false
+        '404':
+          description: Signer not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse_String'
+              example:
+                data: null
+                message: Signer not found
+                success: false
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse_String'
+              example:
+                data: null
+                message: Internal Server Error
+                success: false
+      security:
+      - bearer_auth: []
+components:
+  schemas:
+    GoogleCloudKmsSignerServiceAccountResponseConfig:
+      type: object
+      required:
+      - project_id
+      - client_id
+      - auth_uri
+      - token_uri
+      - auth_provider_x509_cert_url
+      - client_x509_cert_url
+      - universe_domain
+      properties:
+        auth_provider_x509_cert_url:
+          type: string
+        auth_uri:
+          type: string
+        client_id:
+          type: string
+        client_x509_cert_url:
+          type: string
+        project_id:
+          type: string
+        token_uri:
+          type: string
+        universe_domain:
+          type: string
+    ApiResponse_Vec_SignerResponse:
+      type: object
+      required:
+      - success
+      properties:
+        data:
+          type: array
+          items:
+            type: object
+            required:
+            - id
+            - type
+            - config
+            properties:
+              config:
+                $ref: '#/components/schemas/SignerConfigResponse'
+                description: Non-secret configuration details
+              id:
+                type: string
+                description: The unique identifier of the signer
+              type:
+                $ref: '#/components/schemas/SignerType'
+                description: The type of signer (local, aws_kms, google_cloud_kms, vault, etc.)
+        error:
+          type: string
+        metadata:
+          $ref: '#/components/schemas/PluginMetadata'
+        pagination:
+          $ref: '#/components/schemas/PaginationMeta'
+        success:
+          type: boolean
+    GoogleCloudKmsSignerServiceAccountRequestConfig:
+      type: object
+      description: Google Cloud KMS service account configuration for API requests
+      required:
+      - private_key
+      - private_key_id
+      - project_id
+      - client_email
+      - client_id
+      - auth_uri
+      - token_uri
+      - auth_provider_x509_cert_url
+      - client_x509_cert_url
+      - universe_domain
+      properties:
+        auth_provider_x509_cert_url:
+          type: string
+        auth_uri:
+          type: string
+        client_email:
+          type: string
+        client_id:
+          type: string
+        client_x509_cert_url:
+          type: string
+        private_key:
+          type: string
+        private_key_id:
+          type: string
+        project_id:
+          type: string
+        token_uri:
+          type: string
+        universe_domain:
+          type: string
+      additionalProperties: false
+    LocalSignerRequestConfig:
+      type: object
+      description: Local signer configuration for API requests
+      required:
+      - key
+      properties:
+        key:
+          type: string
+      additionalProperties: false
+    VaultTransitSignerRequestConfig:
+      type: object
+      description: Vault Transit signer configuration for API requests
+      required:
+      - key_name
+      - address
+      - role_id
+      - secret_id
+      - pubkey
+      properties:
+        address:
+          type: string
+        key_name:
+          type: string
+        mount_point:
+          type: string
+        namespace:
+          type: string
+        pubkey:
+          type: string
+        role_id:
+          type: string
+        secret_id:
+          type: string
+      additionalProperties: false
+    GoogleCloudKmsSignerRequestConfig:
+      type: object
+      description: Google Cloud KMS signer configuration for API requests
+      required:
+      - service_account
+      - key
+      properties:
+        key:
+          $ref: '#/components/schemas/GoogleCloudKmsSignerKeyRequestConfig'
+        service_account:
+          $ref: '#/components/schemas/GoogleCloudKmsSignerServiceAccountRequestConfig'
+      additionalProperties: false
+    SignerType:
+      type: string
+      description: Signer type enum used for validation and API responses
+      enum:
+      - local
+      - aws_kms
+      - google_cloud_kms
+      - vault
+      - vault_transit
+      - turnkey
+      - cdp
+    LogEntry:
+      type: object
+      required:
+      - level
+      - message
+      properties:
+        level:
+          $ref: '#/components/schemas/LogLevel'
+        message:
+          type: string
+    AwsKmsSignerRequestConfig:
+      type: object
+      description: AWS KMS signer configuration for API requests
+      required:
+      - region
+      - key_id
+      properties:
+        key_id:
+          type: string
+        region:
+          type: string
+      additionalProperties: false
+    VaultSignerRequestConfig:
+      type: object
+      description: Vault signer configuration for API requests
+      required:
+      - address
+      - role_id
+      - secret_id
+      - key_name
+      properties:
+        address:
+          type: string
+        key_name:
+          type: string
+        mount_point:
+          type: string
+        namespace:
+          type: string
+        role_id:
+          type: string
+        secret_id:
+          type: string
+      additionalProperties: false
+    SignerConfigResponse:
+      oneOf:
+      - type: object
+        required:
+        - address
+        - key_name
+        properties:
+          address:
+            type: string
+          key_name:
+            type: string
+          mount_point:
+            type:
+            - string
+            - 'null'
+          namespace:
+            type:
+            - string
+            - 'null'
+      - type: object
+        required:
+        - key_name
+        - address
+        - pubkey
+        properties:
+          address:
+            type: string
+          key_name:
+            type: string
+          mount_point:
+            type:
+            - string
+            - 'null'
+          namespace:
+            type:
+            - string
+            - 'null'
+          pubkey:
+            type: string
+      - type: object
+        required:
+        - key_id
+        properties:
+          key_id:
+            type: string
+          region:
+            type:
+            - string
+            - 'null'
+      - type: object
+        required:
+        - api_public_key
+        - organization_id
+        - private_key_id
+        - public_key
+        properties:
+          api_public_key:
+            type: string
+          organization_id:
+            type: string
+          private_key_id:
+            type: string
+          public_key:
+            type: string
+      - type: object
+        required:
+        - api_key_id
+        - account_address
+        properties:
+          account_address:
+            type: string
+          api_key_id:
+            type: string
+      - type: object
+        required:
+        - service_account
+        - key
+        properties:
+          key:
+            $ref: '#/components/schemas/GoogleCloudKmsSignerKeyResponseConfig'
+          service_account:
+            $ref: '#/components/schemas/GoogleCloudKmsSignerServiceAccountResponseConfig'
+      - type: object
+      description: 'Signer configuration response
+
+        Does not include sensitive information like private keys'
+    GoogleCloudKmsSignerKeyRequestConfig:
+      type: object
+      description: Google Cloud KMS key configuration for API requests
+      required:
+      - location
+      - key_ring_id
+      - key_id
+      - key_version
+      properties:
+        key_id:
+          type: string
+        key_ring_id:
+          type: string
+        key_version:
+          type: integer
+          format: int32
+          minimum: 0
+        location:
+          type: string
+      additionalProperties: false
+    SignerCreateRequest:
+      type: object
+      description: Request model for creating a new signer
+      required:
+      - type
+      - config
+      properties:
+        config:
+          $ref: '#/components/schemas/SignerConfigRequest'
+          description: The signer configuration
+        id:
+          type: string
+          description: Optional ID - if not provided, a UUID will be generated
+        type:
+          $ref: '#/components/schemas/SignerTypeRequest'
+          description: The type of signer
+      additionalProperties: false
+    GoogleCloudKmsSignerKeyResponseConfig:
+      type: object
+      required:
+      - location
+      - key_ring_id
+      - key_id
+      - key_version
+      properties:
+        key_id:
+          type: string
+        key_ring_id:
+          type: string
+        key_version:
+          type: integer
+          format: int32
+          minimum: 0
+        location:
+          type: string
+    ApiResponse_String:
+      type: object
+      required:
+      - success
+      properties:
+        data:
+          type: string
+        error:
+          type: string
+        metadata:
+          $ref: '#/components/schemas/PluginMetadata'
+        pagination:
+          $ref: '#/components/schemas/PaginationMeta'
+        success:
+          type: boolean
+    SignerConfigRequest:
+      oneOf:
+      - $ref: '#/components/schemas/LocalSignerRequestConfig'
+      - $ref: '#/components/schemas/AwsKmsSignerRequestConfig'
+      - $ref: '#/components/schemas/VaultSignerRequestConfig'
+      - $ref: '#/components/schemas/VaultTransitSignerRequestConfig'
+      - $ref: '#/components/schemas/TurnkeySignerRequestConfig'
+      - $ref: '#/components/schemas/CdpSignerRequestConfig'
+      - $ref: '#/components/schemas/GoogleCloudKmsSignerRequestConfig'
+      description: Signer configuration enum for API requests (without type discriminator)
+    SignerUpdateRequest:
+      type: object
+      description: 'Request model for updating an existing signer
+
+        At the moment, we don''t allow updating signers'
+      additionalProperties: false
+    ApiResponse_SignerResponse:
+      type: object
+      required:
+      - success
+      properties:
+        data:
+          type: object
+          required:
+          - id
+          - type
+          - config
+          properties:
+            config:
+              $ref: '#/components/schemas/SignerConfigResponse'
+              description: Non-secret configuration details
+            id:
+              type: string
+              description: The unique identifier of the signer
+            type:
+              $ref: '#/components/schemas/SignerType'
+              description: The type of signer (local, aws_kms, google_cloud_kms, vault, etc.)
+        error:
+          type: string
+        metadata:
+          $ref: '#/components/schemas/PluginMetadata'
+        pagination:
+          $ref: '#/components/schemas/PaginationMeta'
+        success:
+          type: boolean
+    TurnkeySignerRequestConfig:
+      type: object
+      description: Turnkey signer configuration for API requests
+      required:
+      - api_public_key
+      - api_private_key
+      - organization_id
+      - private_key_id
+      - public_key
+      properties:
+        api_private_key:
+          type: string
+        api_public_key:
+          type: string
+        organization_id:
+          type: string
+        private_key_id:
+          type: string
+        public_key:
+          type: string
+      additionalProperties: false
+    PluginMetadata:
+      type: object
+      properties:
+        logs:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/LogEntry'
+        traces:
+          type:
+          - array
+          - 'null'
+          items: {}
+    SignerTypeRequest:
+      type: string
+      description: Signer type enum for API requests
+      enum:
+      - plain
+      - aws_kms
+      - vault
+      - vault_transit
+      - turnkey
+      - cdp
+      - google_cloud_kms
+    LogLevel:
+      type: string
+      enum:
+      - log
+      - info
+      - error
+      - warn
+      - debug
+      - result
+    CdpSignerRequestConfig:
+      type: object
+      description: CDP signer configuration for API requests
+      required:
+      - api_key_id
+      - api_key_secret
+      - wallet_secret
+      - account_address
+      properties:
+        account_address:
+          type: string
+        api_key_id:
+          type: string
+        api_key_secret:
+          type: string
+        wallet_secret:
+          type: string
+      additionalProperties: false
+    PaginationMeta:
+      type: object
+      required:
+      - current_page
+      - per_page
+      - total_items
+      properties:
+        current_page:
+          type: integer
+          format: int32
+          minimum: 0
+        per_page:
+          type: integer
+          format: int32
+          minimum: 0
+        total_items:
+          type: integer
+          format: int64
+          minimum: 0
+  securitySchemes:
+    bearer_auth:
+      type: http
+      scheme: bearer

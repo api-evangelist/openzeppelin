@@ -1,0 +1,517 @@
+openapi: 3.1.0
+info:
+  title: OpenZeppelin Relayer Health Networks API
+  description: OpenZeppelin Relayer API
+  termsOfService: https://www.openzeppelin.com/tos
+  contact:
+    name: OpenZeppelin
+    url: https://www.openzeppelin.com
+  license:
+    name: AGPL-3.0 license
+    url: https://github.com/OpenZeppelin/openzeppelin-relayer/blob/main/LICENSE
+  version: 1.5.0
+tags:
+- name: Networks
+  description: Networks represent blockchain network configurations including RPC endpoints and network-specific settings.
+paths:
+  /api/v1/networks:
+    get:
+      tags:
+      - Networks
+      summary: Network routes implementation
+      description: 'Note: OpenAPI documentation for these endpoints can be found in the `openapi.rs` file
+
+
+        Lists all networks with pagination support.'
+      operationId: listNetworks
+      parameters:
+      - name: page
+        in: query
+        description: Page number for pagination (starts at 1)
+        required: false
+        schema:
+          type: integer
+          minimum: 0
+      - name: per_page
+        in: query
+        description: 'Number of items per page (default: 10)'
+        required: false
+        schema:
+          type: integer
+          minimum: 0
+      responses:
+        '200':
+          description: Network list retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse_Vec_NetworkResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse_String'
+              example:
+                data: null
+                message: Bad Request
+                success: false
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse_String'
+              example:
+                data: null
+                message: Unauthorized
+                success: false
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse_String'
+              example:
+                data: null
+                message: Internal Server Error
+                success: false
+      security:
+      - bearer_auth: []
+  /api/v1/networks/{network_id}:
+    get:
+      tags:
+      - Networks
+      summary: Retrieves details of a specific network by ID.
+      operationId: getNetwork
+      parameters:
+      - name: network_id
+        in: path
+        description: Network ID (e.g., evm:sepolia, solana:mainnet)
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Network retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse_NetworkResponse'
+        '400':
+          description: Bad Request - invalid network type
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse_String'
+              example:
+                data: null
+                message: Bad Request
+                success: false
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse_String'
+              example:
+                data: null
+                message: Unauthorized
+                success: false
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse_String'
+              example:
+                data: null
+                message: Network with ID 'evm:sepolia' not found
+                success: false
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse_String'
+              example:
+                data: null
+                message: Internal Server Error
+                success: false
+      security:
+      - bearer_auth: []
+    patch:
+      tags:
+      - Networks
+      summary: 'Updates a network''s configuration.
+
+        Currently supports updating RPC URLs only. Can be extended to support other fields.'
+      operationId: updateNetwork
+      parameters:
+      - name: network_id
+        in: path
+        description: Network ID (e.g., evm:sepolia, solana:mainnet)
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateNetworkRequest'
+        required: true
+      responses:
+        '200':
+          description: Network updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse_NetworkResponse'
+        '400':
+          description: Bad Request - invalid network type or request data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse_String'
+              example:
+                data: null
+                message: Bad Request
+                success: false
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse_String'
+              example:
+                data: null
+                message: Unauthorized
+                success: false
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse_String'
+              example:
+                data: null
+                message: Network with ID 'evm:sepolia' not found
+                success: false
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse_String'
+              example:
+                data: null
+                message: Internal Server Error
+                success: false
+      security:
+      - bearer_auth: []
+components:
+  schemas:
+    LogEntry:
+      type: object
+      required:
+      - level
+      - message
+      properties:
+        level:
+          $ref: '#/components/schemas/LogLevel'
+        message:
+          type: string
+    PluginMetadata:
+      type: object
+      properties:
+        logs:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/LogEntry'
+        traces:
+          type:
+          - array
+          - 'null'
+          items: {}
+    RelayerNetworkType:
+      type: string
+      description: Network type enum for relayers
+      enum:
+      - evm
+      - solana
+      - stellar
+    ApiResponse_NetworkResponse:
+      type: object
+      required:
+      - success
+      properties:
+        data:
+          type: object
+          description: 'Network response model for API endpoints.
+
+
+            This flattens the internal NetworkRepoModel structure for API responses,
+
+            making network-type-specific fields available at the top level.'
+          required:
+          - id
+          - name
+          - network_type
+          properties:
+            average_blocktime_ms:
+              type: integer
+              format: int64
+              description: Estimated average time between blocks in milliseconds
+              minimum: 0
+            chain_id:
+              type: integer
+              format: int64
+              description: 'EVM-specific: Chain ID'
+              minimum: 0
+            explorer_urls:
+              type: array
+              items:
+                type: string
+              description: List of Explorer endpoint URLs
+            features:
+              type: array
+              items:
+                type: string
+              description: 'EVM-specific: Network features (e.g., "eip1559")'
+            horizon_url:
+              type: string
+              description: 'Stellar-specific: Horizon URL'
+            id:
+              type: string
+              description: Unique identifier composed of network_type and name, e.g., "evm:mainnet"
+            is_testnet:
+              type: boolean
+              description: Flag indicating if the network is a testnet
+            name:
+              type: string
+              description: Name of the network (e.g., "mainnet", "sepolia")
+            network_type:
+              $ref: '#/components/schemas/RelayerNetworkType'
+              description: Type of the network (EVM, Solana, Stellar)
+            passphrase:
+              type: string
+              description: 'Stellar-specific: Network passphrase'
+            required_confirmations:
+              type: integer
+              format: int64
+              description: 'EVM-specific: Required confirmations'
+              minimum: 0
+            rpc_urls:
+              type: array
+              items:
+                $ref: '#/components/schemas/RpcConfig'
+              description: List of RPC endpoint configurations
+            symbol:
+              type: string
+              description: 'EVM-specific: Native token symbol'
+            tags:
+              type: array
+              items:
+                type: string
+              description: List of arbitrary tags for categorizing or filtering networks
+        error:
+          type: string
+        metadata:
+          $ref: '#/components/schemas/PluginMetadata'
+        pagination:
+          $ref: '#/components/schemas/PaginationMeta'
+        success:
+          type: boolean
+    RpcConfig:
+      type: object
+      description: 'Configuration for an RPC endpoint.
+
+
+        This struct contains only persistent configuration (URL and weight).
+
+        Health metadata (failures, pause state) is managed separately via `RpcHealthStore`.'
+      required:
+      - url
+      - weight
+      properties:
+        url:
+          type: string
+          description: The RPC endpoint URL.
+        weight:
+          type: integer
+          format: int32
+          description: 'The weight of this endpoint in the weighted round-robin selection.
+
+            Defaults to [`DEFAULT_RPC_WEIGHT`]. Should be between 0 and 100.'
+          default: 100
+          maximum: 100
+          minimum: 0
+      example:
+        url: https://rpc.example.com
+        weight: 100
+    LogLevel:
+      type: string
+      enum:
+      - log
+      - info
+      - error
+      - warn
+      - debug
+      - result
+    ApiResponse_Vec_NetworkResponse:
+      type: object
+      required:
+      - success
+      properties:
+        data:
+          type: array
+          items:
+            type: object
+            description: 'Network response model for API endpoints.
+
+
+              This flattens the internal NetworkRepoModel structure for API responses,
+
+              making network-type-specific fields available at the top level.'
+            required:
+            - id
+            - name
+            - network_type
+            properties:
+              average_blocktime_ms:
+                type: integer
+                format: int64
+                description: Estimated average time between blocks in milliseconds
+                minimum: 0
+              chain_id:
+                type: integer
+                format: int64
+                description: 'EVM-specific: Chain ID'
+                minimum: 0
+              explorer_urls:
+                type: array
+                items:
+                  type: string
+                description: List of Explorer endpoint URLs
+              features:
+                type: array
+                items:
+                  type: string
+                description: 'EVM-specific: Network features (e.g., "eip1559")'
+              horizon_url:
+                type: string
+                description: 'Stellar-specific: Horizon URL'
+              id:
+                type: string
+                description: Unique identifier composed of network_type and name, e.g., "evm:mainnet"
+              is_testnet:
+                type: boolean
+                description: Flag indicating if the network is a testnet
+              name:
+                type: string
+                description: Name of the network (e.g., "mainnet", "sepolia")
+              network_type:
+                $ref: '#/components/schemas/RelayerNetworkType'
+                description: Type of the network (EVM, Solana, Stellar)
+              passphrase:
+                type: string
+                description: 'Stellar-specific: Network passphrase'
+              required_confirmations:
+                type: integer
+                format: int64
+                description: 'EVM-specific: Required confirmations'
+                minimum: 0
+              rpc_urls:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RpcConfig'
+                description: List of RPC endpoint configurations
+              symbol:
+                type: string
+                description: 'EVM-specific: Native token symbol'
+              tags:
+                type: array
+                items:
+                  type: string
+                description: List of arbitrary tags for categorizing or filtering networks
+        error:
+          type: string
+        metadata:
+          $ref: '#/components/schemas/PluginMetadata'
+        pagination:
+          $ref: '#/components/schemas/PaginationMeta'
+        success:
+          type: boolean
+    UpdateNetworkRequest:
+      type: object
+      description: 'Request structure for updating a network configuration.
+
+        Currently supports updating RPC URLs only. Can be extended to support other fields.'
+      properties:
+        rpc_urls:
+          type: array
+          items:
+            $ref: '#/components/schemas/RpcUrlEntry'
+          description: "List of RPC endpoint configurations for connecting to the network.\nSupports multiple formats:\n- Array of strings: `[\"https://rpc.example.com\"]` (defaults to weight 100)\n- Array of RpcConfig objects: `[{\"url\": \"https://rpc.example.com\", \"weight\": 100}]`\n- Mixed array: `[\"https://rpc1.com\", {\"url\": \"https://rpc2.com\", \"weight\": 100}]`\n  Must be non-empty and contain valid HTTP/HTTPS URLs if provided."
+          example:
+          - url: https://rpc.example.com
+            weight: 100
+      additionalProperties: false
+    PaginationMeta:
+      type: object
+      required:
+      - current_page
+      - per_page
+      - total_items
+      properties:
+        current_page:
+          type: integer
+          format: int32
+          minimum: 0
+        per_page:
+          type: integer
+          format: int32
+          minimum: 0
+        total_items:
+          type: integer
+          format: int64
+          minimum: 0
+    RpcUrlEntry:
+      oneOf:
+      - type: string
+        description: 'Simple string format (e.g., "https://rpc.example.com")
+
+          Defaults to weight 100.'
+      - $ref: '#/components/schemas/RpcConfig'
+        description: Extended object format with explicit weight
+      description: 'Schema-only type representing a flexible RPC URL entry.
+
+        Used for OpenAPI documentation to show that rpc_urls can accept
+
+        either strings or RpcConfig objects.
+
+
+        This is NOT used for actual deserialization - the custom deserializer
+
+        handles the conversion. This type exists solely for schema generation.'
+    ApiResponse_String:
+      type: object
+      required:
+      - success
+      properties:
+        data:
+          type: string
+        error:
+          type: string
+        metadata:
+          $ref: '#/components/schemas/PluginMetadata'
+        pagination:
+          $ref: '#/components/schemas/PaginationMeta'
+        success:
+          type: boolean
+  securitySchemes:
+    bearer_auth:
+      type: http
+      scheme: bearer
