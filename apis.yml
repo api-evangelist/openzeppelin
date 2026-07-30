@@ -8,6 +8,19 @@ description: >
   Stellar networks, and OpenZeppelin Monitor for real-time on-chain activity detection
   and alerting. Defender is sunsetting on July 1, 2026, with users migrating to the
   open-source Relayer and Monitor projects.
+accessModel:
+  pricing: freemium
+  onboarding: self-serve
+  trial: false
+  try_now: true
+  public: false
+  label: Freemium · Self-serve signup
+  confidence: high
+  source:
+  - plans
+  - authentication
+  generated: '2026-07-22'
+  method: derived
 image: https://www.openzeppelin.com/hubfs/openzeppelin-logo.png
 tags:
   - Web3
@@ -25,170 +38,345 @@ modified: "2026-06-13"
 url: https://raw.githubusercontent.com/api-evangelist/openzeppelin/refs/heads/main/apis.yml
 specificationVersion: "0.19"
 apis:
-  - name: OpenZeppelin Defender API
-    description: >
-      The OpenZeppelin Defender API provides programmatic access to the Defender security
-      platform, enabling management of smart contract deployments, transaction relaying,
-      automated monitoring, on-chain governance proposals, and security automation
-      workflows. The API uses JWT token authentication negotiated via SRP protocol and
-      exposes modules for Deploy, Proposal, Relay, Action, Monitor, Admin, Networks,
-      and Relay-Signer operations.
-    image: https://www.openzeppelin.com/hubfs/openzeppelin-logo.png
-    humanURL: https://docs.openzeppelin.com/defender/sdk
-    baseURL: https://defender-api.openzeppelin.com/v2
-    tags:
-      - Defender
-      - Smart Contracts
-      - Deploy
-      - Relayer
-      - Monitor
-      - Automation
-      - Blockchain
-      - Security
-    properties:
-      - type: Documentation
-        url: https://docs.openzeppelin.com/defender/sdk
-      - type: OpenAPI
-        url: https://www.api-docs.defender.openzeppelin.com/
-      - type: Authentication
-        url: https://docs.openzeppelin.com/defender/settings
-      - type: SDKs
-        url: https://www.npmjs.com/package/@openzeppelin/defender-sdk
-      - type: GitHubRepository
-        url: https://github.com/OpenZeppelin/defender-sdk
-      - type: ChangeLog
-        url: https://docs.openzeppelin.com/defender
-      - type: Plans
-        url: plans/plans.yml
-      - type: RateLimits
-        url: rate-limits/rate-limits.yml
-      - type: FinOps
-        url: finops/finops.yml
-    contact:
-      - FN: OpenZeppelin Support
-        url: https://docs.openzeppelin.com/defender/faq
-        email: ""
-  - name: OpenZeppelin Relayer API
-    description: >
-      The OpenZeppelin Relayer is an open-source transaction relay infrastructure service
-      that enables decentralized applications to submit and manage blockchain transactions
-      across EVM-compatible networks (Ethereum, Polygon, Arbitrum, Optimism), Solana,
-      and Stellar. The self-hosted REST API provides endpoints for relayer management,
-      transaction submission and signing, nonce management, gas estimation, and RPC
-      calls. It supports gasless transactions, sponsored transactions, and configurable
-      policies with rate limiting at 100 requests/second (burst 300).
-    image: https://www.openzeppelin.com/hubfs/openzeppelin-logo.png
-    humanURL: https://docs.openzeppelin.com/relayer
-    baseURL: http://localhost:8080/api/v1
-    tags:
-      - Relayer
-      - Blockchain
-      - Ethereum
-      - Solana
-      - Stellar
-      - Transactions
-      - Gasless
-      - Open Source
-    properties:
-      - type: Documentation
-        url: https://docs.openzeppelin.com/relayer
-      - type: OpenAPI
-        url: https://docs.openzeppelin.com/relayer/1.4.x/api
-      - type: OpenAPISpec
-        url: https://raw.githubusercontent.com/api-evangelist/openzeppelin/main/openapi/openzeppelin-relayer-openapi.json
-      - type: GitHubRepository
-        url: https://github.com/OpenZeppelin/openzeppelin-relayer
-      - type: SDKs
-        url: https://github.com/OpenZeppelin/openzeppelin-relayer-sdk
-      - type: Configuration
-        url: https://docs.openzeppelin.com/relayer/configuration
-      - type: Plans
-        url: plans/plans.yml
-      - type: RateLimits
-        url: rate-limits/rate-limits.yml
-      - type: FinOps
-        url: finops/finops.yml
-    contact:
-      - FN: OpenZeppelin Community
-        url: https://github.com/OpenZeppelin/openzeppelin-relayer/issues
-        email: ""
-  - name: OpenZeppelin Monitor API
-    description: >
-      OpenZeppelin Monitor is an open-source blockchain monitoring service that watches
-      for specific on-chain activities and triggers notifications based on configurable
-      conditions. It supports real-time monitoring of EVM-compatible networks, Solana,
-      and Stellar with flexible match conditions on functions, events, and transactions.
-      Notification channels include Slack, Discord, Email, Telegram, Webhooks, and
-      custom scripts. Configurable via JSON files with cron-based scheduling and
-      optional metrics server on port 8081.
-    image: https://www.openzeppelin.com/hubfs/openzeppelin-logo.png
-    humanURL: https://docs.openzeppelin.com/monitor
-    baseURL: http://localhost:8081
-    tags:
-      - Monitor
-      - Blockchain
-      - Alerts
-      - Events
-      - Smart Contracts
-      - Notifications
-      - Open Source
-      - On-chain
-    properties:
-      - type: Documentation
-        url: https://docs.openzeppelin.com/monitor
-      - type: GettingStarted
-        url: https://docs.openzeppelin.com/monitor/quickstart
-      - type: GitHubRepository
-        url: https://github.com/OpenZeppelin/openzeppelin-monitor
-      - type: Plans
-        url: plans/plans.yml
-      - type: RateLimits
-        url: rate-limits/rate-limits.yml
-      - type: FinOps
-        url: finops/finops.yml
-    contact:
-      - FN: OpenZeppelin Community
-        url: https://github.com/OpenZeppelin/openzeppelin-monitor/issues
-        email: ""
-  - name: OpenZeppelin Contracts API Reference
-    description: >
-      The OpenZeppelin Contracts library provides a comprehensive collection of modular,
-      reusable, and secure Solidity smart contracts for building decentralized applications.
-      The API reference covers ERC token standards (ERC-20, ERC-721, ERC-1155), access
-      control, governance, security utilities (reentrancy guards, pausable), upgradeable
-      proxy patterns, and cryptographic primitives. Used by thousands of blockchain
-      projects as the industry standard for secure smart contract development.
-    image: https://www.openzeppelin.com/hubfs/openzeppelin-logo.png
-    humanURL: https://docs.openzeppelin.com/contracts
-    baseURL: https://docs.openzeppelin.com/contracts
-    tags:
-      - Smart Contracts
-      - Solidity
-      - ERC-20
-      - ERC-721
-      - ERC-1155
-      - Governance
-      - Security
-      - Open Source
-    properties:
-      - type: Documentation
-        url: https://docs.openzeppelin.com/contracts
-      - type: APIReference
-        url: https://docs.openzeppelin.com/contracts/5.x/api/access
-      - type: GitHubRepository
-        url: https://github.com/OpenZeppelin/openzeppelin-contracts
-      - type: NPMPackage
-        url: https://www.npmjs.com/package/@openzeppelin/contracts
-      - type: Plans
-        url: plans/plans.yml
-      - type: RateLimits
-        url: rate-limits/rate-limits.yml
-      - type: FinOps
-        url: finops/finops.yml
-    contact:
-      - FN: OpenZeppelin Community
-        url: https://forum.openzeppelin.com/
-        email: ""
+- name: OpenZeppelin Monitor API
+  description: >
+    OpenZeppelin Monitor is an open-source blockchain monitoring service that watches for specific on-chain
+    activities and triggers notifications based on configurable conditions. It supports real-time monitoring
+    of EVM-compatible networks, Solana, and Stellar with flexible match conditions on functions, events,
+    and transactions. Notification channels include Slack, Discord, Email, Telegram, Webhooks, and custom
+    scripts. Configurable via JSON files with cron-based scheduling and optional metrics server on port
+    8081.
+  image: https://www.openzeppelin.com/hubfs/openzeppelin-logo.png
+  humanURL: https://docs.openzeppelin.com/monitor
+  baseURL: http://localhost:8081
+  tags:
+  - Monitor
+  - Blockchain
+  - Alerts
+  - Events
+  - Smart Contracts
+  - Notifications
+  - Open Source
+  - On-chain
+  properties:
+  - type: Documentation
+    url: https://docs.openzeppelin.com/monitor
+  - type: GettingStarted
+    url: https://docs.openzeppelin.com/monitor/quickstart
+  - type: GitHubRepository
+    url: https://github.com/OpenZeppelin/openzeppelin-monitor
+  - type: Plans
+    url: plans/plans.yml
+  - type: RateLimits
+    url: rate-limits/rate-limits.yml
+  - type: FinOps
+    url: finops/finops.yml
+  contact:
+  - FN: OpenZeppelin Community
+    url: https://github.com/OpenZeppelin/openzeppelin-monitor/issues
+    email: ''
+- name: OpenZeppelin Contracts API Reference
+  description: >
+    The OpenZeppelin Contracts library provides a comprehensive collection of modular, reusable, and secure
+    Solidity smart contracts for building decentralized applications. The API reference covers ERC token
+    standards (ERC-20, ERC-721, ERC-1155), access control, governance, security utilities (reentrancy
+    guards, pausable), upgradeable proxy patterns, and cryptographic primitives. Used by thousands of
+    blockchain projects as the industry standard for secure smart contract development.
+  image: https://www.openzeppelin.com/hubfs/openzeppelin-logo.png
+  humanURL: https://docs.openzeppelin.com/contracts
+  baseURL: https://docs.openzeppelin.com/contracts
+  tags:
+  - Smart Contracts
+  - Solidity
+  - ERC-20
+  - ERC-721
+  - ERC-1155
+  - Governance
+  - Security
+  - Open Source
+  properties:
+  - type: Documentation
+    url: https://docs.openzeppelin.com/contracts
+  - type: APIReference
+    url: https://docs.openzeppelin.com/contracts/5.x/api/access
+  - type: GitHubRepository
+    url: https://github.com/OpenZeppelin/openzeppelin-contracts
+  - type: NPMPackage
+    url: https://www.npmjs.com/package/@openzeppelin/contracts
+  - type: Plans
+    url: plans/plans.yml
+  - type: RateLimits
+    url: rate-limits/rate-limits.yml
+  - type: FinOps
+    url: finops/finops.yml
+  contact:
+  - FN: OpenZeppelin Community
+    url: https://forum.openzeppelin.com/
+    email: ''
+- aid: openzeppelin:openzeppelin-health-api
+  name: OpenZeppelin Health API
+  description: Health is responsible for showing the health of the relayers.
+  humanURL: https://docs.openzeppelin.com/defender/sdk
+  baseURL: https://defender-api.openzeppelin.com/v2
+  tags:
+  - Health
+  properties:
+  - type: OpenAPI
+    url: openapi/openzeppelin-health-api-openapi.yml
+  - type: Documentation
+    url: https://docs.openzeppelin.com/defender/sdk
+  - type: Authentication
+    url: https://docs.openzeppelin.com/defender/settings
+  - type: SDKs
+    url: https://www.npmjs.com/package/@openzeppelin/defender-sdk
+  - type: GitHubRepository
+    url: https://github.com/OpenZeppelin/defender-sdk
+  - type: ChangeLog
+    url: https://docs.openzeppelin.com/defender
+  - type: Plans
+    url: plans/plans.yml
+  - type: RateLimits
+    url: rate-limits/rate-limits.yml
+  - type: FinOps
+    url: finops/finops.yml
+  - type: Documentation
+    url: https://docs.openzeppelin.com/relayer
+  - type: OpenAPISpec
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/openzeppelin/main/openapi/openzeppelin-relayer-openapi.json
+  - type: GitHubRepository
+    url: https://github.com/OpenZeppelin/openzeppelin-relayer
+  - type: SDKs
+    url: https://github.com/OpenZeppelin/openzeppelin-relayer-sdk
+  - type: Configuration
+    url: https://docs.openzeppelin.com/relayer/configuration
+- aid: openzeppelin:openzeppelin-metrics-api
+  name: OpenZeppelin Metrics API
+  description: Metrics are responsible for showing the metrics related to the relayers.
+  humanURL: https://docs.openzeppelin.com/defender/sdk
+  baseURL: https://defender-api.openzeppelin.com/v2
+  tags:
+  - Metrics
+  properties:
+  - type: OpenAPI
+    url: openapi/openzeppelin-metrics-api-openapi.yml
+  - type: Documentation
+    url: https://docs.openzeppelin.com/defender/sdk
+  - type: Authentication
+    url: https://docs.openzeppelin.com/defender/settings
+  - type: SDKs
+    url: https://www.npmjs.com/package/@openzeppelin/defender-sdk
+  - type: GitHubRepository
+    url: https://github.com/OpenZeppelin/defender-sdk
+  - type: ChangeLog
+    url: https://docs.openzeppelin.com/defender
+  - type: Plans
+    url: plans/plans.yml
+  - type: RateLimits
+    url: rate-limits/rate-limits.yml
+  - type: FinOps
+    url: finops/finops.yml
+  - type: Documentation
+    url: https://docs.openzeppelin.com/relayer
+  - type: OpenAPISpec
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/openzeppelin/main/openapi/openzeppelin-relayer-openapi.json
+  - type: GitHubRepository
+    url: https://github.com/OpenZeppelin/openzeppelin-relayer
+  - type: SDKs
+    url: https://github.com/OpenZeppelin/openzeppelin-relayer-sdk
+  - type: Configuration
+    url: https://docs.openzeppelin.com/relayer/configuration
+- aid: openzeppelin:openzeppelin-networks-api
+  name: OpenZeppelin Networks API
+  description: >-
+    Networks represent blockchain network configurations including RPC endpoints and network-specific
+    settings.
+  humanURL: https://docs.openzeppelin.com/defender/sdk
+  baseURL: https://defender-api.openzeppelin.com/v2
+  tags:
+  - Networks
+  properties:
+  - type: OpenAPI
+    url: openapi/openzeppelin-networks-api-openapi.yml
+  - type: Documentation
+    url: https://docs.openzeppelin.com/defender/sdk
+  - type: Authentication
+    url: https://docs.openzeppelin.com/defender/settings
+  - type: SDKs
+    url: https://www.npmjs.com/package/@openzeppelin/defender-sdk
+  - type: GitHubRepository
+    url: https://github.com/OpenZeppelin/defender-sdk
+  - type: ChangeLog
+    url: https://docs.openzeppelin.com/defender
+  - type: Plans
+    url: plans/plans.yml
+  - type: RateLimits
+    url: rate-limits/rate-limits.yml
+  - type: FinOps
+    url: finops/finops.yml
+  - type: Documentation
+    url: https://docs.openzeppelin.com/relayer
+  - type: OpenAPISpec
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/openzeppelin/main/openapi/openzeppelin-relayer-openapi.json
+  - type: GitHubRepository
+    url: https://github.com/OpenZeppelin/openzeppelin-relayer
+  - type: SDKs
+    url: https://github.com/OpenZeppelin/openzeppelin-relayer-sdk
+  - type: Configuration
+    url: https://docs.openzeppelin.com/relayer/configuration
+- aid: openzeppelin:openzeppelin-notifications-api
+  name: OpenZeppelin Notifications API
+  description: Notifications are responsible for showing the notifications related to the relayers.
+  humanURL: https://docs.openzeppelin.com/defender/sdk
+  baseURL: https://defender-api.openzeppelin.com/v2
+  tags:
+  - Notifications
+  properties:
+  - type: OpenAPI
+    url: openapi/openzeppelin-notifications-api-openapi.yml
+  - type: Documentation
+    url: https://docs.openzeppelin.com/defender/sdk
+  - type: Authentication
+    url: https://docs.openzeppelin.com/defender/settings
+  - type: SDKs
+    url: https://www.npmjs.com/package/@openzeppelin/defender-sdk
+  - type: GitHubRepository
+    url: https://github.com/OpenZeppelin/defender-sdk
+  - type: ChangeLog
+    url: https://docs.openzeppelin.com/defender
+  - type: Plans
+    url: plans/plans.yml
+  - type: RateLimits
+    url: rate-limits/rate-limits.yml
+  - type: FinOps
+    url: finops/finops.yml
+  - type: Documentation
+    url: https://docs.openzeppelin.com/relayer
+  - type: OpenAPISpec
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/openzeppelin/main/openapi/openzeppelin-relayer-openapi.json
+  - type: GitHubRepository
+    url: https://github.com/OpenZeppelin/openzeppelin-relayer
+  - type: SDKs
+    url: https://github.com/OpenZeppelin/openzeppelin-relayer-sdk
+  - type: Configuration
+    url: https://docs.openzeppelin.com/relayer/configuration
+- aid: openzeppelin:openzeppelin-plugins-api
+  name: OpenZeppelin Plugins API
+  description: >-
+    Plugins are TypeScript functions that can be used to extend the OpenZeppelin Relayer API functionality.
+  humanURL: https://docs.openzeppelin.com/defender/sdk
+  baseURL: https://defender-api.openzeppelin.com/v2
+  tags:
+  - Plugins
+  properties:
+  - type: OpenAPI
+    url: openapi/openzeppelin-plugins-api-openapi.yml
+  - type: Documentation
+    url: https://docs.openzeppelin.com/defender/sdk
+  - type: Authentication
+    url: https://docs.openzeppelin.com/defender/settings
+  - type: SDKs
+    url: https://www.npmjs.com/package/@openzeppelin/defender-sdk
+  - type: GitHubRepository
+    url: https://github.com/OpenZeppelin/defender-sdk
+  - type: ChangeLog
+    url: https://docs.openzeppelin.com/defender
+  - type: Plans
+    url: plans/plans.yml
+  - type: RateLimits
+    url: rate-limits/rate-limits.yml
+  - type: FinOps
+    url: finops/finops.yml
+  - type: Documentation
+    url: https://docs.openzeppelin.com/relayer
+  - type: OpenAPISpec
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/openzeppelin/main/openapi/openzeppelin-relayer-openapi.json
+  - type: GitHubRepository
+    url: https://github.com/OpenZeppelin/openzeppelin-relayer
+  - type: SDKs
+    url: https://github.com/OpenZeppelin/openzeppelin-relayer-sdk
+  - type: Configuration
+    url: https://docs.openzeppelin.com/relayer/configuration
+- aid: openzeppelin:openzeppelin-relayers-api
+  name: OpenZeppelin Relayers API
+  description: >-
+    Relayers are the core components of the OpenZeppelin Relayer API. They are responsible for executing
+    transactions on behalf of users and providing a secure and reliable way to interact with the blockchain.
+  humanURL: https://docs.openzeppelin.com/defender/sdk
+  baseURL: https://defender-api.openzeppelin.com/v2
+  tags:
+  - Relayers
+  properties:
+  - type: OpenAPI
+    url: openapi/openzeppelin-relayers-api-openapi.yml
+  - type: Documentation
+    url: https://docs.openzeppelin.com/defender/sdk
+  - type: Authentication
+    url: https://docs.openzeppelin.com/defender/settings
+  - type: SDKs
+    url: https://www.npmjs.com/package/@openzeppelin/defender-sdk
+  - type: GitHubRepository
+    url: https://github.com/OpenZeppelin/defender-sdk
+  - type: ChangeLog
+    url: https://docs.openzeppelin.com/defender
+  - type: Plans
+    url: plans/plans.yml
+  - type: RateLimits
+    url: rate-limits/rate-limits.yml
+  - type: FinOps
+    url: finops/finops.yml
+  - type: Documentation
+    url: https://docs.openzeppelin.com/relayer
+  - type: OpenAPISpec
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/openzeppelin/main/openapi/openzeppelin-relayer-openapi.json
+  - type: GitHubRepository
+    url: https://github.com/OpenZeppelin/openzeppelin-relayer
+  - type: SDKs
+    url: https://github.com/OpenZeppelin/openzeppelin-relayer-sdk
+  - type: Configuration
+    url: https://docs.openzeppelin.com/relayer/configuration
+- aid: openzeppelin:openzeppelin-signers-api
+  name: OpenZeppelin Signers API
+  description: Signers are responsible for signing the transactions related to the relayers.
+  humanURL: https://docs.openzeppelin.com/defender/sdk
+  baseURL: https://defender-api.openzeppelin.com/v2
+  tags:
+  - Signers
+  properties:
+  - type: OpenAPI
+    url: openapi/openzeppelin-signers-api-openapi.yml
+  - type: Documentation
+    url: https://docs.openzeppelin.com/defender/sdk
+  - type: Authentication
+    url: https://docs.openzeppelin.com/defender/settings
+  - type: SDKs
+    url: https://www.npmjs.com/package/@openzeppelin/defender-sdk
+  - type: GitHubRepository
+    url: https://github.com/OpenZeppelin/defender-sdk
+  - type: ChangeLog
+    url: https://docs.openzeppelin.com/defender
+  - type: Plans
+    url: plans/plans.yml
+  - type: RateLimits
+    url: rate-limits/rate-limits.yml
+  - type: FinOps
+    url: finops/finops.yml
+  - type: Documentation
+    url: https://docs.openzeppelin.com/relayer
+  - type: OpenAPISpec
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/openzeppelin/main/openapi/openzeppelin-relayer-openapi.json
+  - type: GitHubRepository
+    url: https://github.com/OpenZeppelin/openzeppelin-relayer
+  - type: SDKs
+    url: https://github.com/OpenZeppelin/openzeppelin-relayer-sdk
+  - type: Configuration
+    url: https://docs.openzeppelin.com/relayer/configuration
 common:
   - type: AgenticAccess
     url: agentic-access/openzeppelin-agentic-access.yml
