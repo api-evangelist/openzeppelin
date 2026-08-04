@@ -1,0 +1,26 @@
+{
+  "provider": "openzeppelin",
+  "sources": [
+    "openzeppelin-health-api-openapi.yml",
+    "openzeppelin-metrics-api-openapi.yml",
+    "openzeppelin-networks-api-openapi.yml",
+    "openzeppelin-notifications-api-openapi.yml",
+    "openzeppelin-plugins-api-openapi.yml",
+    "openzeppelin-relayers-api-openapi.yml",
+    "openzeppelin-signers-api-openapi.yml"
+  ],
+  "outputs": [
+    "openzeppelin-health-api-openapi.yml",
+    "openzeppelin-metrics-api-openapi.yml",
+    "openzeppelin-networks-api-openapi.yml",
+    "openzeppelin-notifications-api-openapi.yml",
+    "openzeppelin-plugins-api-openapi.yml",
+    "openzeppelin-relayers-api-openapi.yml",
+    "openzeppelin-signers-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}
