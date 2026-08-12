@@ -378,6 +378,9 @@ apis:
   - type: Configuration
     url: https://docs.openzeppelin.com/relayer/configuration
 common:
+  - type: License
+    name: AGPL-3.0
+    url: https://github.com/OpenZeppelin/openzeppelin-monitor/blob/main/LICENSE
   - type: AgenticAccess
     url: agentic-access/openzeppelin-agentic-access.yml
   - type: TrustCenter
