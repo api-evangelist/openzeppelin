@@ -1,0 +1,97 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "OpenZeppelin Relayer Health Networks API",
+    "version": "1.5.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Networks",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Network routes implementation",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/networks",
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Page number for pagination (starts at 1)"
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query",
+                "description": "Number of items per page (default: 10)"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Note: OpenAPI documentation for these endpoints can be found in the `openapi.rs` file\n\nLists all networks with pagination support."
+        },
+        {
+          "info": {
+            "name": "Retrieves details of a specific network by ID.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/networks/:network_id",
+            "params": [
+              {
+                "name": "network_id",
+                "value": "",
+                "type": "path",
+                "description": "Network ID (e.g., evm:sepolia, solana:mainnet)"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Retrieves details of a specific network by ID."
+        },
+        {
+          "info": {
+            "name": "Updates a network's configuration.\nCurrently supports updating RPC URLs only. Can be extended to support other fields.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/api/v1/networks/:network_id",
+            "params": [
+              {
+                "name": "network_id",
+                "value": "",
+                "type": "path",
+                "description": "Network ID (e.g., evm:sepolia, solana:mainnet)"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Updates a network's configuration.\nCurrently supports updating RPC URLs only. Can be extended to support other fields."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

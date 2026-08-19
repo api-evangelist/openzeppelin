@@ -1,0 +1,159 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "OpenZeppelin Relayer Health Plugins API",
+    "version": "1.5.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Plugins",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List plugins.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/plugins",
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Page number for pagination (starts at 1)"
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query",
+                "description": "Number of items per page (default: 10)"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "List plugins."
+        },
+        {
+          "info": {
+            "name": "Get plugin by ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/plugins/:plugin_id",
+            "params": [
+              {
+                "name": "plugin_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the plugin"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Get plugin by ID"
+        },
+        {
+          "info": {
+            "name": "Update plugin configuration",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/api/v1/plugins/:plugin_id",
+            "params": [
+              {
+                "name": "plugin_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the plugin"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Updates mutable plugin fields such as timeout, emit_logs, emit_traces,\nraw_response, allow_get_invocation, config, and forward_logs.\nThe plugin id and path cannot be changed after creation.\n\nAll fields are optional - only the provided fields will be updated.\nTo clear the `config` field, pass `\"config\": null`."
+        },
+        {
+          "info": {
+            "name": "Execute a plugin via GET (must be enabled per plugin)",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/plugins/:plugin_id/call",
+            "params": [
+              {
+                "name": "plugin_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the plugin"
+              },
+              {
+                "name": "route",
+                "value": "",
+                "type": "query",
+                "description": "Optional route suffix for custom routing (e.g., '/verify'). Alternative to appending the route to the URL path."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "This endpoint is disabled by default. To enable it for a given plugin, set\n`allow_get_invocation: true` in the plugin configuration.\n\nWhen invoked via GET:\n- `params` is an empty object (`{}`)\n- query parameters are passed to the plugin handler via `context.query`\n- wildcard route routing is supported the same way as POST (see `doc_call_plugin`)\n- Use the `route` query parameter or append the route to the URL path"
+        },
+        {
+          "info": {
+            "name": "Execute a plugin with optional wildcard route routing",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/plugins/:plugin_id/call",
+            "params": [
+              {
+                "name": "plugin_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the plugin"
+              },
+              {
+                "name": "route",
+                "value": "",
+                "type": "query",
+                "description": "Optional route suffix for custom routing (e.g., '/verify'). Alternative to appending the route to the URL path."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Logs and traces are only returned when the plugin is configured with `emit_logs` / `emit_traces`.\nPlugin-provided errors are normalized into a consistent payload (`code`, `details`) and a derived\nmessage so downstream clients receive a stable shape regardless of how the handler threw.\n\nThe endpoint supports wildcard route routing, allowing plugins to implement custom routing logic:\n- `/api/v1/plugins/{plugin_id}/call` - Default endpoint (route = \"\")\n- `/api/v1/plugins/{plugin_id}/call?route=/ver"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

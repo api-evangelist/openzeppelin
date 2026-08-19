@@ -1,0 +1,63 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "OpenZeppelin Relayer Health Metrics API",
+    "version": "1.5.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Metrics",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Triggers an update of system metrics and returns the result in plain text format.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/debug/metrics/scrape"
+          },
+          "docs": "# Returns\n\nAn `HttpResponse` containing the updated metrics in plain text, or an error message if the\nupdate fails."
+        },
+        {
+          "info": {
+            "name": "Metrics routes implementation",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/metrics"
+          },
+          "docs": "Note: OpenAPI documentation for these endpoints can be found in the `openapi.rs` file\nReturns a list of all available metric names in JSON format.\n\n# Returns\n\nAn `HttpResponse` containing a JSON array of metric names."
+        },
+        {
+          "info": {
+            "name": "Returns the details of a specific metric in plain text format.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/metrics/:metric_name",
+            "params": [
+              {
+                "name": "metric_name",
+                "value": "",
+                "type": "path",
+                "description": "Name of the metric to retrieve, e.g. utopia_transactions_total"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "# Parameters\n\n- `path`: The name of the metric to retrieve details for.\n\n# Returns\n\nAn `HttpResponse` containing the metric details in plain text, or a 404 error if the metric is\nnot found."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

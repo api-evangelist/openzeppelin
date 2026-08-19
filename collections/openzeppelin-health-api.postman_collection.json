@@ -1,0 +1,254 @@
+{
+  "item": [
+    {
+      "id": "c1716911-2e91-4d0a-80e2-ae5fd9c68c0f",
+      "name": "Health",
+      "description": {
+        "content": "Health is responsible for showing the health of the relayers.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "556a3289-f0ce-443a-8bc5-9ef22182e153",
+          "name": "Health routes implementation",
+          "request": {
+            "name": "Health routes implementation",
+            "description": {
+              "content": "Note: OpenAPI documentation for these endpoints can be found in the `openapi.rs` file\n\nHandles the `/health` endpoint.\n\nReturns an `HttpResponse` with a status of `200 OK` and a body of `\"OK\"`.\nThis endpoint is used for liveness probes in container orchestration platforms.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "health"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "text/plain"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "e78b03fb-ad3f-453e-860e-dacb1a986e9d",
+              "name": "Service is alive",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "health"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "text/plain"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "OK",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "9d5129ec-c246-4969-8fdb-ffdef38c8cb1",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "health"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "text/plain"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "string",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "c95513e5-a534-4d4e-8873-0c8ba4b082e9",
+          "name": "Readiness endpoint that checks system resources, Redis, Queue, and plugins.",
+          "request": {
+            "name": "Readiness endpoint that checks system resources, Redis, Queue, and plugins.",
+            "description": {
+              "content": "Returns 200 OK if the service is ready to accept traffic, or 503 Service Unavailable if not.\nThis endpoint is used for readiness probes in container orchestration platforms like\nAWS ECS or Kubernetes.\n\n## Health Check Components\n\n- **System**: File descriptor usage, CLOSE_WAIT socket count\n- **Redis**: Primary and reader pool connectivity\n- **Queue**: Queue's Redis connections (separate from app's Redis)\n- **Plugins**: Plugin pool health, circuit breaker state, and connection metrics (if enabled)\n\n## Status Levels\n\n- `healthy`: All components operational\n- `degraded`: Some components degraded but service can function (e.g., reader pool down)\n- `unhealthy`: Critical components failed, service unavailable\n\n## Plugin Connection Metrics\n\nWhen plugins are enabled, the following connection metrics are exposed:\n\n- `shared_socket_available_slots`: Number of additional concurrent plugin executions that can start\n- `shared_socket_active_connections`: Current number of active plugin execution connections\n- `shared_socket_registered_executions`: Number of plugin executions currently registered (awaiting response)\n- `connection_pool_available_slots`: Available connections to the pool server\n- `connection_pool_active_connections`: Active connections to the pool server\n\nThese metrics help diagnose connection pool exhaustion and plugin capacity issues.\n\n## Caching\n\nHealth check results are cached for 10 seconds to prevent excessive load from frequent\nhealth checks. Multiple requests within the TTL return the same cached response.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "ready"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "53888147-f8d1-4c69-b5a5-6c4b0ba65dec",
+              "name": "Service is ready (healthy or degraded)",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "ready"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"components\": {\n    \"plugins\": {\n      \"avg_response_time_ms\": 120,\n      \"circuit_state\": \"closed\",\n      \"connection_pool_active_connections\": 2,\n      \"connection_pool_available_slots\": 8,\n      \"enabled\": true,\n      \"memory\": 52428800,\n      \"pool_completed\": 1000,\n      \"pool_queued\": 2,\n      \"recovering\": false,\n      \"shared_socket_active_connections\": 2,\n      \"shared_socket_available_slots\": 48,\n      \"shared_socket_registered_executions\": 2,\n      \"status\": \"healthy\",\n      \"success_rate\": 99.5,\n      \"uptime_ms\": 3600000\n    },\n    \"queue\": {\n      \"status\": \"healthy\"\n    },\n    \"redis\": {\n      \"primary_pool\": {\n        \"available\": 8,\n        \"connected\": true,\n        \"max_size\": 16\n      },\n      \"reader_pool\": {\n        \"available\": 8,\n        \"connected\": true,\n        \"max_size\": 16\n      },\n      \"status\": \"healthy\"\n    },\n    \"system\": {\n      \"close_wait_count\": 0,\n      \"fd_count\": 42,\n      \"fd_limit\": 1024,\n      \"fd_usage_percent\": 4,\n      \"status\": \"healthy\"\n    }\n  },\n  \"ready\": true,\n  \"status\": \"healthy\",\n  \"timestamp\": \"2026-01-30T12:00:00Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "9b284003-3585-42dd-a0da-5e2a3e328b31",
+              "name": "Service is not ready (unhealthy)",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "ready"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Service Unavailable",
+              "code": 503,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"components\": {\n    \"plugins\": {\n      \"avg_response_time_ms\": 150,\n      \"circuit_state\": \"open\",\n      \"connection_pool_active_connections\": 4,\n      \"connection_pool_available_slots\": 6,\n      \"enabled\": true,\n      \"error\": \"Plugin pool health check failed\",\n      \"memory\": 52428800,\n      \"pool_completed\": 1000,\n      \"pool_queued\": 5,\n      \"recovering\": true,\n      \"recovery_percent\": 10,\n      \"shared_socket_active_connections\": 5,\n      \"shared_socket_available_slots\": 45,\n      \"shared_socket_registered_executions\": 5,\n      \"status\": \"degraded\",\n      \"success_rate\": 95.5,\n      \"uptime_ms\": 3600000\n    },\n    \"queue\": {\n      \"error\": \"Queue connection: Stats check timed out\",\n      \"status\": \"unhealthy\"\n    },\n    \"redis\": {\n      \"error\": \"Redis primary pool: PING timed out\",\n      \"primary_pool\": {\n        \"available\": 0,\n        \"connected\": false,\n        \"error\": \"PING timed out\",\n        \"max_size\": 16\n      },\n      \"reader_pool\": {\n        \"available\": 0,\n        \"connected\": false,\n        \"error\": \"PING timed out\",\n        \"max_size\": 16\n      },\n      \"status\": \"unhealthy\"\n    },\n    \"system\": {\n      \"close_wait_count\": 0,\n      \"fd_count\": 42,\n      \"fd_limit\": 1024,\n      \"fd_usage_percent\": 4,\n      \"status\": \"healthy\"\n    }\n  },\n  \"ready\": false,\n  \"reason\": \"Redis primary pool: PING timed out\",\n  \"status\": \"unhealthy\",\n  \"timestamp\": \"2026-01-30T12:00:00Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "/",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "5daaee82-1ecd-4276-bc61-7b714ab9fa74",
+    "name": "OpenZeppelin Relayer Health API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "OpenZeppelin Relayer API\n\nContact Support:\n Name: OpenZeppelin",
+      "type": "text/plain"
+    }
+  }
+}

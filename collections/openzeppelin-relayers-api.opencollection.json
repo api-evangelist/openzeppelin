@@ -1,0 +1,552 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "OpenZeppelin Relayer Health Relayers API",
+    "version": "1.5.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Relayers",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Relayer routes implementation",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/relayers",
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Page number for pagination (starts at 1)"
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query",
+                "description": "Number of items per page (default: 10)"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Note: OpenAPI documentation for these endpoints can be found in the `openapi.rs` file\n\nLists all relayers with pagination support."
+        },
+        {
+          "info": {
+            "name": "Creates a new relayer.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/relayers",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Creates a new relayer."
+        },
+        {
+          "info": {
+            "name": "Retrieves details of a specific relayer by ID.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/relayers/:relayer_id",
+            "params": [
+              {
+                "name": "relayer_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the relayer"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Retrieves details of a specific relayer by ID."
+        },
+        {
+          "info": {
+            "name": "Updates a relayer's information based on the provided update request.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/api/v1/relayers/:relayer_id",
+            "params": [
+              {
+                "name": "relayer_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the relayer"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Updates a relayer's information based on the provided update request."
+        },
+        {
+          "info": {
+            "name": "Deletes a relayer by ID.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/v1/relayers/:relayer_id",
+            "params": [
+              {
+                "name": "relayer_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the relayer"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Deletes a relayer by ID."
+        },
+        {
+          "info": {
+            "name": "Retrieves the balance of a specific relayer.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/relayers/:relayer_id/balance",
+            "params": [
+              {
+                "name": "relayer_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the relayer"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Retrieves the balance of a specific relayer."
+        },
+        {
+          "info": {
+            "name": "Performs a JSON-RPC call using the specified relayer.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/relayers/:relayer_id/rpc",
+            "params": [
+              {
+                "name": "relayer_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the relayer"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Performs a JSON-RPC call using the specified relayer."
+        },
+        {
+          "info": {
+            "name": "Signs data using the specified relayer.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/relayers/:relayer_id/sign",
+            "params": [
+              {
+                "name": "relayer_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the relayer"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Signs data using the specified relayer."
+        },
+        {
+          "info": {
+            "name": "Signs a transaction using the specified relayer (Stellar only).",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/relayers/:relayer_id/sign-transaction",
+            "params": [
+              {
+                "name": "relayer_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the relayer"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Signs a transaction using the specified relayer (Stellar only)."
+        },
+        {
+          "info": {
+            "name": "Signs typed data using the specified relayer.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/relayers/:relayer_id/sign-typed-data",
+            "params": [
+              {
+                "name": "relayer_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the relayer"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Signs typed data using the specified relayer."
+        },
+        {
+          "info": {
+            "name": "Fetches the current status of a specific relayer.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/relayers/:relayer_id/status",
+            "params": [
+              {
+                "name": "relayer_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the relayer"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Fetches the current status of a specific relayer."
+        },
+        {
+          "info": {
+            "name": "Sends a transaction through the specified relayer.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/relayers/:relayer_id/transactions",
+            "params": [
+              {
+                "name": "relayer_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the relayer"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Sends a transaction through the specified relayer."
+        },
+        {
+          "info": {
+            "name": "Lists all transactions for a specific relayer with pagination.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/relayers/:relayer_id/transactions/",
+            "params": [
+              {
+                "name": "relayer_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the relayer"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Page number for pagination (starts at 1)"
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query",
+                "description": "Number of items per page (default: 10)"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Lists all transactions for a specific relayer with pagination."
+        },
+        {
+          "info": {
+            "name": "Retrieves a transaction by its nonce value.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/relayers/:relayer_id/transactions/by-nonce/:nonce",
+            "params": [
+              {
+                "name": "relayer_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the relayer"
+              },
+              {
+                "name": "nonce",
+                "value": "",
+                "type": "path",
+                "description": "The nonce of the transaction"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Retrieves a transaction by its nonce value."
+        },
+        {
+          "info": {
+            "name": "Deletes all pending transactions for a specific relayer.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/v1/relayers/:relayer_id/transactions/pending",
+            "params": [
+              {
+                "name": "relayer_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the relayer"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Deletes all pending transactions for a specific relayer."
+        },
+        {
+          "info": {
+            "name": "Prepares a sponsored (gasless) transaction with fee payments.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/relayers/:relayer_id/transactions/sponsored/build",
+            "params": [
+              {
+                "name": "relayer_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the relayer"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "This endpoint builds a transaction where the relayer will pay the network fees on behalf of the user.\nThe user pays fees in a token of their choice (e.g., USDC) instead of the native network currency.\n\nThe endpoint accepts either a pre-built transaction XDR or a set of operations to build a transaction from.\nIt returns a prepared transaction that includes:\n- The transaction XDR (base64 encoded) ready for signing\n- The fee amount in both the fee token and native currency (stroops for Stellar)\n- T"
+        },
+        {
+          "info": {
+            "name": "Estimates fees for a sponsored (gasless) transaction.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/relayers/:relayer_id/transactions/sponsored/quote",
+            "params": [
+              {
+                "name": "relayer_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the relayer"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "This endpoint provides fee estimation for transactions where the relayer will pay the network fees\non behalf of the user. The user pays fees in a token of their choice (e.g., USDC) instead of the\nnative network currency (e.g., XLM for Stellar).\n\nThe endpoint accepts either a pre-built transaction XDR or a set of operations to build a transaction from.\nIt returns the estimated fee amount in the specified fee token and the conversion rate from the native currency."
+        },
+        {
+          "info": {
+            "name": "Retrieves a specific transaction by its ID.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/relayers/:relayer_id/transactions/:transaction_id",
+            "params": [
+              {
+                "name": "relayer_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the relayer"
+              },
+              {
+                "name": "transaction_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the transaction"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Retrieves a specific transaction by its ID."
+        },
+        {
+          "info": {
+            "name": "Replaces a specific transaction with a new one.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/api/v1/relayers/:relayer_id/transactions/:transaction_id",
+            "params": [
+              {
+                "name": "relayer_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the relayer"
+              },
+              {
+                "name": "transaction_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the transaction"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Replaces a specific transaction with a new one."
+        },
+        {
+          "info": {
+            "name": "Cancels a specific transaction by its ID.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/v1/relayers/:relayer_id/transactions/:transaction_id",
+            "params": [
+              {
+                "name": "relayer_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the relayer"
+              },
+              {
+                "name": "transaction_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the transaction"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Cancels a specific transaction by its ID."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

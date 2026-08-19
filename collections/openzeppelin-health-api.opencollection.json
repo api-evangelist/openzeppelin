@@ -1,0 +1,40 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "OpenZeppelin Relayer Health API",
+    "version": "1.5.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Health",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Health routes implementation",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/health"
+          },
+          "docs": "Note: OpenAPI documentation for these endpoints can be found in the `openapi.rs` file\n\nHandles the `/health` endpoint.\n\nReturns an `HttpResponse` with a status of `200 OK` and a body of `\"OK\"`.\nThis endpoint is used for liveness probes in container orchestration platforms."
+        },
+        {
+          "info": {
+            "name": "Readiness endpoint that checks system resources, Redis, Queue, and plugins.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/ready"
+          },
+          "docs": "Returns 200 OK if the service is ready to accept traffic, or 503 Service Unavailable if not.\nThis endpoint is used for readiness probes in container orchestration platforms like\nAWS ECS or Kubernetes.\n\n## Health Check Components\n\n- **System**: File descriptor usage, CLOSE_WAIT socket count\n- **Redis**: Primary and reader pool connectivity\n- **Queue**: Queue's Redis connections (separate from app's Redis)\n- **Plugins**: Plugin pool health, circuit breaker state, and connection metrics (if enabled"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
