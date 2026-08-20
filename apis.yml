@@ -50,6 +50,15 @@ apis:
   humanURL: https://docs.openzeppelin.com/monitor
   baseURL: http://localhost:8081
   tags:
+  - Monitors
+  - Blockchain
+  - Alerts
+  - Event
+  - Smart Contracts
+  - Notification
+  - Open-Source
+  - Onchain
+  tags_raw:
   - Monitor
   - Blockchain
   - Alerts
@@ -86,6 +95,15 @@ apis:
   humanURL: https://docs.openzeppelin.com/contracts
   baseURL: https://docs.openzeppelin.com/contracts
   tags:
+  - Smart Contracts
+  - Solidity
+  - ERC-20
+  - ERC-721
+  - ERC-1155
+  - Governance
+  - Security
+  - Open-Source
+  tags_raw:
   - Smart Contracts
   - Solidity
   - ERC-20
@@ -232,6 +250,8 @@ apis:
   humanURL: https://docs.openzeppelin.com/defender/sdk
   baseURL: https://defender-api.openzeppelin.com/v2
   tags:
+  - Notification
+  tags_raw:
   - Notifications
   properties:
   - type: OpenAPI
