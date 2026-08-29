@@ -8,6 +8,20 @@ description: >
   Stellar networks, and OpenZeppelin Monitor for real-time on-chain activity detection
   and alerting. Defender is sunsetting on July 1, 2026, with users migrating to the
   open-source Relayer and Monitor projects.
+deliveryModel:
+  model: open-core
+  license: AGPL-3.0
+  open_source: true
+  commercial: true
+  callable_host: true
+  label: Open core · an OSS project plus a commercial hosted product
+  confidence: high
+  source:
+  - license
+  - openapi
+  - pricing
+  generated: '2026-08-28'
+  method: derived
 accessModel:
   pricing: freemium
   onboarding: self-serve
@@ -398,6 +412,16 @@ apis:
   - type: Configuration
     url: https://docs.openzeppelin.com/relayer/configuration
 common:
+  - type: IssueTracker
+    url: https://github.com/OpenZeppelin/openzeppelin-monitor/issues
+  - type: Releases
+    url: https://github.com/OpenZeppelin/openzeppelin-monitor/releases
+  - type: SecurityPolicy
+    url: https://github.com/OpenZeppelin/openzeppelin-monitor/blob/main/SECURITY.md
+  - type: CodeOfConduct
+    url: https://github.com/OpenZeppelin/openzeppelin-monitor/blob/main/CODE_OF_CONDUCT.md
+  - type: ContributionGuide
+    url: https://github.com/OpenZeppelin/openzeppelin-monitor/blob/main/CONTRIBUTING.md
   - type: License
     name: AGPL-3.0
     url: https://github.com/OpenZeppelin/openzeppelin-monitor/blob/main/LICENSE
