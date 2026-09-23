@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: OpenZeppelin Relayer Health Networks API
+  title: OpenZeppelin Relayer Networks API
   description: OpenZeppelin Relayer API
   termsOfService: https://www.openzeppelin.com/tos
   contact:
@@ -82,7 +82,7 @@ paths:
     get:
       tags:
       - Networks
-      summary: Retrieves details of a specific network by ID.
+      summary: Retrieves details of a specific network by ID
       operationId: getNetwork
       parameters:
       - name: network_id
@@ -143,9 +143,7 @@ paths:
     patch:
       tags:
       - Networks
-      summary: 'Updates a network''s configuration.
-
-        Currently supports updating RPC URLs only. Can be extended to support other fields.'
+      summary: Updates a network's configuration.
       operationId: updateNetwork
       parameters:
       - name: network_id
@@ -211,30 +209,6 @@ paths:
       - bearer_auth: []
 components:
   schemas:
-    LogEntry:
-      type: object
-      required:
-      - level
-      - message
-      properties:
-        level:
-          $ref: '#/components/schemas/LogLevel'
-        message:
-          type: string
-    PluginMetadata:
-      type: object
-      properties:
-        logs:
-          type:
-          - array
-          - 'null'
-          items:
-            $ref: '#/components/schemas/LogEntry'
-        traces:
-          type:
-          - array
-          - 'null'
-          items: {}
     RelayerNetworkType:
       type: string
       description: Network type enum for relayers
@@ -242,6 +216,33 @@ components:
       - evm
       - solana
       - stellar
+    RpcConfig:
+      type: object
+      description: 'Configuration for an RPC endpoint.
+
+
+        This struct contains only persistent configuration (URL and weight).
+
+        Health metadata (failures, pause state) is managed separately via `RpcHealthStore`.'
+      required:
+      - url
+      - weight
+      properties:
+        url:
+          type: string
+          description: The RPC endpoint URL.
+        weight:
+          type: integer
+          format: int32
+          description: 'The weight of this endpoint in the weighted round-robin selection.
+
+            Defaults to [`DEFAULT_RPC_WEIGHT`]. Should be between 0 and 100.'
+          default: 100
+          maximum: 100
+          minimum: 0
+      example:
+        url: https://rpc.example.com
+        weight: 100
     ApiResponse_NetworkResponse:
       type: object
       required:
@@ -324,42 +325,64 @@ components:
           $ref: '#/components/schemas/PaginationMeta'
         success:
           type: boolean
-    RpcConfig:
+    ApiResponse_String:
       type: object
-      description: 'Configuration for an RPC endpoint.
-
-
-        This struct contains only persistent configuration (URL and weight).
-
-        Health metadata (failures, pause state) is managed separately via `RpcHealthStore`.'
       required:
-      - url
-      - weight
+      - success
       properties:
-        url:
+        data:
           type: string
-          description: The RPC endpoint URL.
-        weight:
-          type: integer
-          format: int32
-          description: 'The weight of this endpoint in the weighted round-robin selection.
+        error:
+          type: string
+        metadata:
+          $ref: '#/components/schemas/PluginMetadata'
+        pagination:
+          $ref: '#/components/schemas/PaginationMeta'
+        success:
+          type: boolean
+    RpcUrlEntry:
+      oneOf:
+      - type: string
+        description: 'Simple string format (e.g., "https://rpc.example.com")
 
-            Defaults to [`DEFAULT_RPC_WEIGHT`]. Should be between 0 and 100.'
-          default: 100
-          maximum: 100
-          minimum: 0
-      example:
-        url: https://rpc.example.com
-        weight: 100
-    LogLevel:
-      type: string
-      enum:
-      - log
-      - info
-      - error
-      - warn
-      - debug
-      - result
+          Defaults to weight 100.'
+      - $ref: '#/components/schemas/RpcConfig'
+        description: Extended object format with explicit weight
+      description: 'Schema-only type representing a flexible RPC URL entry.
+
+        Used for OpenAPI documentation to show that rpc_urls can accept
+
+        either strings or RpcConfig objects.
+
+
+        This is NOT used for actual deserialization - the custom deserializer
+
+        handles the conversion. This type exists solely for schema generation.'
+    UpdateNetworkRequest:
+      type: object
+      description: 'Request structure for updating a network configuration.
+
+        Currently supports updating RPC URLs only. Can be extended to support other fields.'
+      properties:
+        rpc_urls:
+          type: array
+          items:
+            $ref: '#/components/schemas/RpcUrlEntry'
+          description: "List of RPC endpoint configurations for connecting to the network.\nSupports multiple formats:\n- Array of strings: `[\"https://rpc.example.com\"]` (defaults to weight 100)\n- Array of RpcConfig objects: `[{\"url\": \"https://rpc.example.com\", \"weight\": 100}]`\n- Mixed array: `[\"https://rpc1.com\", {\"url\": \"https://rpc2.com\", \"weight\": 100}]`\n  Must be non-empty and contain valid HTTP/HTTPS URLs if provided."
+          example:
+          - url: https://rpc.example.com
+            weight: 100
+      additionalProperties: false
+    LogEntry:
+      type: object
+      required:
+      - level
+      - message
+      properties:
+        level:
+          $ref: '#/components/schemas/LogLevel'
+        message:
+          type: string
     ApiResponse_Vec_NetworkResponse:
       type: object
       required:
@@ -444,21 +467,15 @@ components:
           $ref: '#/components/schemas/PaginationMeta'
         success:
           type: boolean
-    UpdateNetworkRequest:
-      type: object
-      description: 'Request structure for updating a network configuration.
-
-        Currently supports updating RPC URLs only. Can be extended to support other fields.'
-      properties:
-        rpc_urls:
-          type: array
-          items:
-            $ref: '#/components/schemas/RpcUrlEntry'
-          description: "List of RPC endpoint configurations for connecting to the network.\nSupports multiple formats:\n- Array of strings: `[\"https://rpc.example.com\"]` (defaults to weight 100)\n- Array of RpcConfig objects: `[{\"url\": \"https://rpc.example.com\", \"weight\": 100}]`\n- Mixed array: `[\"https://rpc1.com\", {\"url\": \"https://rpc2.com\", \"weight\": 100}]`\n  Must be non-empty and contain valid HTTP/HTTPS URLs if provided."
-          example:
-          - url: https://rpc.example.com
-            weight: 100
-      additionalProperties: false
+    LogLevel:
+      type: string
+      enum:
+      - log
+      - info
+      - error
+      - warn
+      - debug
+      - result
     PaginationMeta:
       type: object
       required:
@@ -478,39 +495,20 @@ components:
           type: integer
           format: int64
           minimum: 0
-    RpcUrlEntry:
-      oneOf:
-      - type: string
-        description: 'Simple string format (e.g., "https://rpc.example.com")
-
-          Defaults to weight 100.'
-      - $ref: '#/components/schemas/RpcConfig'
-        description: Extended object format with explicit weight
-      description: 'Schema-only type representing a flexible RPC URL entry.
-
-        Used for OpenAPI documentation to show that rpc_urls can accept
-
-        either strings or RpcConfig objects.
-
-
-        This is NOT used for actual deserialization - the custom deserializer
-
-        handles the conversion. This type exists solely for schema generation.'
-    ApiResponse_String:
+    PluginMetadata:
       type: object
-      required:
-      - success
       properties:
-        data:
-          type: string
-        error:
-          type: string
-        metadata:
-          $ref: '#/components/schemas/PluginMetadata'
-        pagination:
-          $ref: '#/components/schemas/PaginationMeta'
-        success:
-          type: boolean
+        logs:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/LogEntry'
+        traces:
+          type:
+          - array
+          - 'null'
+          items: {}
   securitySchemes:
     bearer_auth:
       type: http

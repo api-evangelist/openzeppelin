@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: OpenZeppelin Relayer Health Metrics API
+  title: OpenZeppelin Relayer Metrics API
   description: OpenZeppelin Relayer API
   termsOfService: https://www.openzeppelin.com/tos
   contact:
@@ -18,7 +18,7 @@ paths:
     get:
       tags:
       - Metrics
-      summary: Triggers an update of system metrics and returns the result in plain text format.
+      summary: Triggers an update of system metrics and returns the result in plain text format
       description: '# Returns
 
 
@@ -65,7 +65,7 @@ paths:
     get:
       tags:
       - Metrics
-      summary: Returns the details of a specific metric in plain text format.
+      summary: Returns the details of a specific metric in plain text format
       description: '# Parameters
 
 

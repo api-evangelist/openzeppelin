@@ -1,13 +1,7 @@
 {
   "provider": "openzeppelin",
   "sources": [
-    "openzeppelin-health-api-openapi.yml",
-    "openzeppelin-metrics-api-openapi.yml",
-    "openzeppelin-networks-api-openapi.yml",
-    "openzeppelin-notifications-api-openapi.yml",
-    "openzeppelin-plugins-api-openapi.yml",
-    "openzeppelin-relayers-api-openapi.yml",
-    "openzeppelin-signers-api-openapi.yml"
+    "_original/openzeppelin-relayer-openapi.json"
   ],
   "outputs": [
     "openzeppelin-health-api-openapi.yml",
@@ -21,6 +15,18 @@
   "archived": [],
   "errors": [],
   "warnings": [],
-  "notes": [],
-  "skipped": []
+  "notes": [
+    "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "openzeppelin-relayer-openapi.json: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "apis.yml register: already-registered"
+  ],
+  "skipped": [
+    "openzeppelin-health-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "openzeppelin-metrics-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "openzeppelin-networks-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "openzeppelin-notifications-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "openzeppelin-plugins-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "openzeppelin-relayers-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "openzeppelin-signers-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
 }
