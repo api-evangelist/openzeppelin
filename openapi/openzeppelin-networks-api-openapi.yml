@@ -209,40 +209,30 @@ paths:
       - bearer_auth: []
 components:
   schemas:
-    RelayerNetworkType:
+    LogLevel:
       type: string
-      description: Network type enum for relayers
       enum:
-      - evm
-      - solana
-      - stellar
-    RpcConfig:
+      - log
+      - info
+      - error
+      - warn
+      - debug
+      - result
+    UpdateNetworkRequest:
       type: object
-      description: 'Configuration for an RPC endpoint.
+      description: 'Request structure for updating a network configuration.
 
-
-        This struct contains only persistent configuration (URL and weight).
-
-        Health metadata (failures, pause state) is managed separately via `RpcHealthStore`.'
-      required:
-      - url
-      - weight
+        Currently supports updating RPC URLs only. Can be extended to support other fields.'
       properties:
-        url:
-          type: string
-          description: The RPC endpoint URL.
-        weight:
-          type: integer
-          format: int32
-          description: 'The weight of this endpoint in the weighted round-robin selection.
-
-            Defaults to [`DEFAULT_RPC_WEIGHT`]. Should be between 0 and 100.'
-          default: 100
-          maximum: 100
-          minimum: 0
-      example:
-        url: https://rpc.example.com
-        weight: 100
+        rpc_urls:
+          type: array
+          items:
+            $ref: '#/components/schemas/RpcUrlEntry'
+          description: "List of RPC endpoint configurations for connecting to the network.\nSupports multiple formats:\n- Array of strings: `[\"https://rpc.example.com\"]` (defaults to weight 100)\n- Array of RpcConfig objects: `[{\"url\": \"https://rpc.example.com\", \"weight\": 100}]`\n- Mixed array: `[\"https://rpc1.com\", {\"url\": \"https://rpc2.com\", \"weight\": 100}]`\n  Must be non-empty and contain valid HTTP/HTTPS URLs if provided."
+          example:
+          - url: https://rpc.example.com
+            weight: 100
+      additionalProperties: false
     ApiResponse_NetworkResponse:
       type: object
       required:
@@ -325,21 +315,83 @@ components:
           $ref: '#/components/schemas/PaginationMeta'
         success:
           type: boolean
-    ApiResponse_String:
+    LogEntry:
       type: object
       required:
-      - success
+      - level
+      - message
       properties:
-        data:
+        level:
+          $ref: '#/components/schemas/LogLevel'
+        message:
           type: string
-        error:
+    PaginationMeta:
+      type: object
+      required:
+      - current_page
+      - per_page
+      - total_items
+      properties:
+        current_page:
+          type: integer
+          format: int32
+          minimum: 0
+        per_page:
+          type: integer
+          format: int32
+          minimum: 0
+        total_items:
+          type: integer
+          format: int64
+          minimum: 0
+    RelayerNetworkType:
+      type: string
+      description: Network type enum for relayers
+      enum:
+      - evm
+      - solana
+      - stellar
+    PluginMetadata:
+      type: object
+      properties:
+        logs:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/LogEntry'
+        traces:
+          type:
+          - array
+          - 'null'
+          items: {}
+    RpcConfig:
+      type: object
+      description: 'Configuration for an RPC endpoint.
+
+
+        This struct contains only persistent configuration (URL and weight).
+
+        Health metadata (failures, pause state) is managed separately via `RpcHealthStore`.'
+      required:
+      - url
+      - weight
+      properties:
+        url:
           type: string
-        metadata:
-          $ref: '#/components/schemas/PluginMetadata'
-        pagination:
-          $ref: '#/components/schemas/PaginationMeta'
-        success:
-          type: boolean
+          description: The RPC endpoint URL.
+        weight:
+          type: integer
+          format: int32
+          description: 'The weight of this endpoint in the weighted round-robin selection.
+
+            Defaults to [`DEFAULT_RPC_WEIGHT`]. Should be between 0 and 100.'
+          default: 100
+          maximum: 100
+          minimum: 0
+      example:
+        url: https://rpc.example.com
+        weight: 100
     RpcUrlEntry:
       oneOf:
       - type: string
@@ -358,31 +410,21 @@ components:
         This is NOT used for actual deserialization - the custom deserializer
 
         handles the conversion. This type exists solely for schema generation.'
-    UpdateNetworkRequest:
-      type: object
-      description: 'Request structure for updating a network configuration.
-
-        Currently supports updating RPC URLs only. Can be extended to support other fields.'
-      properties:
-        rpc_urls:
-          type: array
-          items:
-            $ref: '#/components/schemas/RpcUrlEntry'
-          description: "List of RPC endpoint configurations for connecting to the network.\nSupports multiple formats:\n- Array of strings: `[\"https://rpc.example.com\"]` (defaults to weight 100)\n- Array of RpcConfig objects: `[{\"url\": \"https://rpc.example.com\", \"weight\": 100}]`\n- Mixed array: `[\"https://rpc1.com\", {\"url\": \"https://rpc2.com\", \"weight\": 100}]`\n  Must be non-empty and contain valid HTTP/HTTPS URLs if provided."
-          example:
-          - url: https://rpc.example.com
-            weight: 100
-      additionalProperties: false
-    LogEntry:
+    ApiResponse_String:
       type: object
       required:
-      - level
-      - message
+      - success
       properties:
-        level:
-          $ref: '#/components/schemas/LogLevel'
-        message:
+        data:
           type: string
+        error:
+          type: string
+        metadata:
+          $ref: '#/components/schemas/PluginMetadata'
+        pagination:
+          $ref: '#/components/schemas/PaginationMeta'
+        success:
+          type: boolean
     ApiResponse_Vec_NetworkResponse:
       type: object
       required:
@@ -467,48 +509,6 @@ components:
           $ref: '#/components/schemas/PaginationMeta'
         success:
           type: boolean
-    LogLevel:
-      type: string
-      enum:
-      - log
-      - info
-      - error
-      - warn
-      - debug
-      - result
-    PaginationMeta:
-      type: object
-      required:
-      - current_page
-      - per_page
-      - total_items
-      properties:
-        current_page:
-          type: integer
-          format: int32
-          minimum: 0
-        per_page:
-          type: integer
-          format: int32
-          minimum: 0
-        total_items:
-          type: integer
-          format: int64
-          minimum: 0
-    PluginMetadata:
-      type: object
-      properties:
-        logs:
-          type:
-          - array
-          - 'null'
-          items:
-            $ref: '#/components/schemas/LogEntry'
-        traces:
-          type:
-          - array
-          - 'null'
-          items: {}
   securitySchemes:
     bearer_auth:
       type: http

@@ -71,7 +71,7 @@ apis:
   - Event
   - Smart Contracts
   - Notification
-  - Open-Source
+  - Open Source
   - Onchain
   tags_raw:
   - Monitor
@@ -82,6 +82,7 @@ apis:
   - Notifications
   - Open Source
   - On-chain
+  - Open-Source
   properties:
   - type: Documentation
     url: https://docs.openzeppelin.com/monitor
@@ -117,7 +118,7 @@ apis:
   - ERC-1155
   - Governance
   - Security
-  - Open-Source
+  - Open Source
   tags_raw:
   - Smart Contracts
   - Solidity
@@ -127,6 +128,7 @@ apis:
   - Governance
   - Security
   - Open Source
+  - Open-Source
   properties:
   - type: Documentation
     url: https://docs.openzeppelin.com/contracts

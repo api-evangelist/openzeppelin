@@ -495,11 +495,79 @@ paths:
       - bearer_auth: []
 components:
   schemas:
-    PluginCallRequest:
+    LogLevel:
+      type: string
+      enum:
+      - log
+      - info
+      - error
+      - warn
+      - debug
+      - result
+    ApiResponse_PluginModel:
       type: object
+      required:
+      - success
       properties:
-        params:
-          description: Plugin parameters. If not provided, the entire request body will be used as params.
+        data:
+          type: object
+          required:
+          - id
+          - path
+          - timeout
+          properties:
+            allow_get_invocation:
+              type: boolean
+              description: Whether to allow GET requests to invoke plugin logic
+            config:
+              type:
+              - object
+              - 'null'
+              description: User-defined configuration accessible to the plugin (must be a JSON object)
+              additionalProperties: {}
+              propertyNames:
+                type: string
+            emit_logs:
+              type: boolean
+              description: Whether to include logs in the HTTP response
+            emit_traces:
+              type: boolean
+              description: Whether to include traces in the HTTP response
+            forward_logs:
+              type: boolean
+              description: Whether to forward plugin logs into the relayer's tracing output
+            id:
+              type: string
+              description: Plugin ID
+            path:
+              type: string
+              description: Plugin path
+            raw_response:
+              type: boolean
+              description: Whether to return raw plugin response without ApiResponse wrapper
+            timeout:
+              type: integer
+              format: int64
+              description: Plugin timeout
+              minimum: 0
+        error:
+          type: string
+        metadata:
+          $ref: '#/components/schemas/PluginMetadata'
+        pagination:
+          $ref: '#/components/schemas/PaginationMeta'
+        success:
+          type: boolean
+    LogEntry:
+      type: object
+      required:
+      - level
+      - message
+      properties:
+        level:
+          $ref: '#/components/schemas/LogLevel'
+        message:
+          type: string
     ApiResponse_PaginatedResult_PluginModel:
       type: object
       required:
@@ -576,6 +644,39 @@ components:
           $ref: '#/components/schemas/PaginationMeta'
         success:
           type: boolean
+    PaginationMeta:
+      type: object
+      required:
+      - current_page
+      - per_page
+      - total_items
+      properties:
+        current_page:
+          type: integer
+          format: int32
+          minimum: 0
+        per_page:
+          type: integer
+          format: int32
+          minimum: 0
+        total_items:
+          type: integer
+          format: int64
+          minimum: 0
+    PluginMetadata:
+      type: object
+      properties:
+        logs:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/LogEntry'
+        traces:
+          type:
+          - array
+          - 'null'
+          items: {}
     ApiResponse_Value:
       type: object
       required:
@@ -590,52 +691,18 @@ components:
           $ref: '#/components/schemas/PaginationMeta'
         success:
           type: boolean
-    ApiResponse_PluginModel:
+    PluginCallRequest:
+      type: object
+      properties:
+        params:
+          description: Plugin parameters. If not provided, the entire request body will be used as params.
+    ApiResponse_String:
       type: object
       required:
       - success
       properties:
         data:
-          type: object
-          required:
-          - id
-          - path
-          - timeout
-          properties:
-            allow_get_invocation:
-              type: boolean
-              description: Whether to allow GET requests to invoke plugin logic
-            config:
-              type:
-              - object
-              - 'null'
-              description: User-defined configuration accessible to the plugin (must be a JSON object)
-              additionalProperties: {}
-              propertyNames:
-                type: string
-            emit_logs:
-              type: boolean
-              description: Whether to include logs in the HTTP response
-            emit_traces:
-              type: boolean
-              description: Whether to include traces in the HTTP response
-            forward_logs:
-              type: boolean
-              description: Whether to forward plugin logs into the relayer's tracing output
-            id:
-              type: string
-              description: Plugin ID
-            path:
-              type: string
-              description: Plugin path
-            raw_response:
-              type: boolean
-              description: Whether to return raw plugin response without ApiResponse wrapper
-            timeout:
-              type: integer
-              format: int64
-              description: Plugin timeout
-              minimum: 0
+          type: string
         error:
           type: string
         metadata:
@@ -657,21 +724,6 @@ components:
               - string
               - 'null'
             details: {}
-        error:
-          type: string
-        metadata:
-          $ref: '#/components/schemas/PluginMetadata'
-        pagination:
-          $ref: '#/components/schemas/PaginationMeta'
-        success:
-          type: boolean
-    ApiResponse_String:
-      type: object
-      required:
-      - success
-      properties:
-        data:
-          type: string
         error:
           type: string
         metadata:
@@ -731,58 +783,6 @@ components:
           description: Plugin timeout in seconds
           minimum: 0
       additionalProperties: false
-    LogEntry:
-      type: object
-      required:
-      - level
-      - message
-      properties:
-        level:
-          $ref: '#/components/schemas/LogLevel'
-        message:
-          type: string
-    LogLevel:
-      type: string
-      enum:
-      - log
-      - info
-      - error
-      - warn
-      - debug
-      - result
-    PaginationMeta:
-      type: object
-      required:
-      - current_page
-      - per_page
-      - total_items
-      properties:
-        current_page:
-          type: integer
-          format: int32
-          minimum: 0
-        per_page:
-          type: integer
-          format: int32
-          minimum: 0
-        total_items:
-          type: integer
-          format: int64
-          minimum: 0
-    PluginMetadata:
-      type: object
-      properties:
-        logs:
-          type:
-          - array
-          - 'null'
-          items:
-            $ref: '#/components/schemas/LogEntry'
-        traces:
-          type:
-          - array
-          - 'null'
-          items: {}
   securitySchemes:
     bearer_auth:
       type: http

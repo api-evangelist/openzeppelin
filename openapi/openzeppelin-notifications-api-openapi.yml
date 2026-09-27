@@ -334,6 +334,15 @@ paths:
       - bearer_auth: []
 components:
   schemas:
+    LogLevel:
+      type: string
+      enum:
+      - log
+      - info
+      - error
+      - warn
+      - debug
+      - result
     ApiResponse_NotificationResponse:
       type: object
       required:
@@ -401,26 +410,6 @@ components:
         url:
           type: string
       additionalProperties: false
-    ApiResponse_String:
-      type: object
-      required:
-      - success
-      properties:
-        data:
-          type: string
-        error:
-          type: string
-        metadata:
-          $ref: '#/components/schemas/PluginMetadata'
-        pagination:
-          $ref: '#/components/schemas/PaginationMeta'
-        success:
-          type: boolean
-    NotificationType:
-      type: string
-      description: Notification type enum used by both config file and API
-      enum:
-      - webhook
     LogEntry:
       type: object
       required:
@@ -431,15 +420,11 @@ components:
           $ref: '#/components/schemas/LogLevel'
         message:
           type: string
-    LogLevel:
+    NotificationType:
       type: string
+      description: Notification type enum used by both config file and API
       enum:
-      - log
-      - info
-      - error
-      - warn
-      - debug
-      - result
+      - webhook
     PaginationMeta:
       type: object
       required:
@@ -459,6 +444,35 @@ components:
           type: integer
           format: int64
           minimum: 0
+    PluginMetadata:
+      type: object
+      properties:
+        logs:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/LogEntry'
+        traces:
+          type:
+          - array
+          - 'null'
+          items: {}
+    ApiResponse_String:
+      type: object
+      required:
+      - success
+      properties:
+        data:
+          type: string
+        error:
+          type: string
+        metadata:
+          $ref: '#/components/schemas/PluginMetadata'
+        pagination:
+          $ref: '#/components/schemas/PaginationMeta'
+        success:
+          type: boolean
     ApiResponse_Vec_NotificationResponse:
       type: object
       required:
@@ -492,20 +506,6 @@ components:
           $ref: '#/components/schemas/PaginationMeta'
         success:
           type: boolean
-    PluginMetadata:
-      type: object
-      properties:
-        logs:
-          type:
-          - array
-          - 'null'
-          items:
-            $ref: '#/components/schemas/LogEntry'
-        traces:
-          type:
-          - array
-          - 'null'
-          items: {}
   securitySchemes:
     bearer_auth:
       type: http
