@@ -204,6 +204,84 @@ paths:
                 timestamp: '2026-01-30T12:00:00Z'
 components:
   schemas:
+    PoolStatus:
+      type: object
+      description: Status of an individual Redis connection pool.
+      required:
+      - connected
+      - available
+      - max_size
+      properties:
+        available:
+          type: integer
+          description: Number of available connections in the pool.
+          minimum: 0
+        connected:
+          type: boolean
+          description: Whether the pool is connected and responding to PING.
+        error:
+          type: string
+          description: Error message if the pool is not healthy.
+        max_size:
+          type: integer
+          description: Maximum configured pool size.
+          minimum: 0
+    ReadinessResponse:
+      type: object
+      description: Complete readiness response.
+      required:
+      - ready
+      - status
+      - components
+      - timestamp
+      properties:
+        components:
+          $ref: '#/components/schemas/Components'
+        ready:
+          type: boolean
+        reason:
+          type: string
+        status:
+          $ref: '#/components/schemas/ComponentStatus'
+        timestamp:
+          type: string
+    SystemHealth:
+      type: object
+      description: System health information (file descriptors, sockets).
+      required:
+      - status
+      - fd_count
+      - fd_limit
+      - fd_usage_percent
+      - close_wait_count
+      properties:
+        close_wait_count:
+          type: integer
+          minimum: 0
+        error:
+          type: string
+        fd_count:
+          type: integer
+          minimum: 0
+        fd_limit:
+          type: integer
+          minimum: 0
+        fd_usage_percent:
+          type: integer
+          format: int32
+          minimum: 0
+        status:
+          $ref: '#/components/schemas/ComponentStatus'
+    QueueHealth:
+      type: object
+      description: Queue health information.
+      required:
+      - status
+      properties:
+        error:
+          type: string
+        status:
+          $ref: '#/components/schemas/ComponentStatus'
     PluginHealth:
       type: object
       description: Plugin health information.
@@ -283,84 +361,6 @@ components:
       - healthy
       - degraded
       - unhealthy
-    PoolStatus:
-      type: object
-      description: Status of an individual Redis connection pool.
-      required:
-      - connected
-      - available
-      - max_size
-      properties:
-        available:
-          type: integer
-          description: Number of available connections in the pool.
-          minimum: 0
-        connected:
-          type: boolean
-          description: Whether the pool is connected and responding to PING.
-        error:
-          type: string
-          description: Error message if the pool is not healthy.
-        max_size:
-          type: integer
-          description: Maximum configured pool size.
-          minimum: 0
-    SystemHealth:
-      type: object
-      description: System health information (file descriptors, sockets).
-      required:
-      - status
-      - fd_count
-      - fd_limit
-      - fd_usage_percent
-      - close_wait_count
-      properties:
-        close_wait_count:
-          type: integer
-          minimum: 0
-        error:
-          type: string
-        fd_count:
-          type: integer
-          minimum: 0
-        fd_limit:
-          type: integer
-          minimum: 0
-        fd_usage_percent:
-          type: integer
-          format: int32
-          minimum: 0
-        status:
-          $ref: '#/components/schemas/ComponentStatus'
-    ReadinessResponse:
-      type: object
-      description: Complete readiness response.
-      required:
-      - ready
-      - status
-      - components
-      - timestamp
-      properties:
-        components:
-          $ref: '#/components/schemas/Components'
-        ready:
-          type: boolean
-        reason:
-          type: string
-        status:
-          $ref: '#/components/schemas/ComponentStatus'
-        timestamp:
-          type: string
-    QueueHealth:
-      type: object
-      description: Queue health information.
-      required:
-      - status
-      properties:
-        error:
-          type: string
-        status:
-          $ref: '#/components/schemas/ComponentStatus'
     Components:
       type: object
       description: All health check components.

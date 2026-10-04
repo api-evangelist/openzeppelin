@@ -209,6 +209,182 @@ paths:
       - bearer_auth: []
 components:
   schemas:
+    RpcConfig:
+      type: object
+      description: 'Configuration for an RPC endpoint.
+
+
+        This struct contains only persistent configuration (URL and weight).
+
+        Health metadata (failures, pause state) is managed separately via `RpcHealthStore`.'
+      required:
+      - url
+      - weight
+      properties:
+        url:
+          type: string
+          description: The RPC endpoint URL.
+        weight:
+          type: integer
+          format: int32
+          description: 'The weight of this endpoint in the weighted round-robin selection.
+
+            Defaults to [`DEFAULT_RPC_WEIGHT`]. Should be between 0 and 100.'
+          default: 100
+          maximum: 100
+          minimum: 0
+      example:
+        url: https://rpc.example.com
+        weight: 100
+    PaginationMeta:
+      type: object
+      required:
+      - current_page
+      - per_page
+      - total_items
+      properties:
+        current_page:
+          type: integer
+          format: int32
+          minimum: 0
+        per_page:
+          type: integer
+          format: int32
+          minimum: 0
+        total_items:
+          type: integer
+          format: int64
+          minimum: 0
+    ApiResponse_NetworkResponse:
+      type: object
+      required:
+      - success
+      properties:
+        data:
+          type: object
+          description: 'Network response model for API endpoints.
+
+
+            This flattens the internal NetworkRepoModel structure for API responses,
+
+            making network-type-specific fields available at the top level.'
+          required:
+          - id
+          - name
+          - network_type
+          properties:
+            average_blocktime_ms:
+              type: integer
+              format: int64
+              description: Estimated average time between blocks in milliseconds
+              minimum: 0
+            chain_id:
+              type: integer
+              format: int64
+              description: 'EVM-specific: Chain ID'
+              minimum: 0
+            explorer_urls:
+              type: array
+              items:
+                type: string
+              description: List of Explorer endpoint URLs
+            features:
+              type: array
+              items:
+                type: string
+              description: 'EVM-specific: Network features (e.g., "eip1559")'
+            horizon_url:
+              type: string
+              description: 'Stellar-specific: Horizon URL'
+            id:
+              type: string
+              description: Unique identifier composed of network_type and name, e.g., "evm:mainnet"
+            is_testnet:
+              type: boolean
+              description: Flag indicating if the network is a testnet
+            name:
+              type: string
+              description: Name of the network (e.g., "mainnet", "sepolia")
+            network_type:
+              $ref: '#/components/schemas/RelayerNetworkType'
+              description: Type of the network (EVM, Solana, Stellar)
+            passphrase:
+              type: string
+              description: 'Stellar-specific: Network passphrase'
+            required_confirmations:
+              type: integer
+              format: int64
+              description: 'EVM-specific: Required confirmations'
+              minimum: 0
+            rpc_urls:
+              type: array
+              items:
+                $ref: '#/components/schemas/RpcConfig'
+              description: List of RPC endpoint configurations
+            symbol:
+              type: string
+              description: 'EVM-specific: Native token symbol'
+            tags:
+              type: array
+              items:
+                type: string
+              description: List of arbitrary tags for categorizing or filtering networks
+        error:
+          type: string
+        metadata:
+          $ref: '#/components/schemas/PluginMetadata'
+        pagination:
+          $ref: '#/components/schemas/PaginationMeta'
+        success:
+          type: boolean
+    RpcUrlEntry:
+      oneOf:
+      - type: string
+        description: 'Simple string format (e.g., "https://rpc.example.com")
+
+          Defaults to weight 100.'
+      - $ref: '#/components/schemas/RpcConfig'
+        description: Extended object format with explicit weight
+      description: 'Schema-only type representing a flexible RPC URL entry.
+
+        Used for OpenAPI documentation to show that rpc_urls can accept
+
+        either strings or RpcConfig objects.
+
+
+        This is NOT used for actual deserialization - the custom deserializer
+
+        handles the conversion. This type exists solely for schema generation.'
+    LogLevel:
+      type: string
+      enum:
+      - log
+      - info
+      - error
+      - warn
+      - debug
+      - result
+    PluginMetadata:
+      type: object
+      properties:
+        logs:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/LogEntry'
+        traces:
+          type:
+          - array
+          - 'null'
+          items: {}
+    RelayerNetworkType:
+      type: string
+      description: Network type enum for relayers
+      enum:
+      - evm
+      - solana
+      - stellar
     ApiResponse_String:
       type: object
       required:
@@ -224,13 +400,21 @@ components:
           $ref: '#/components/schemas/PaginationMeta'
         success:
           type: boolean
-    RelayerNetworkType:
-      type: string
-      description: Network type enum for relayers
-      enum:
-      - evm
-      - solana
-      - stellar
+    UpdateNetworkRequest:
+      type: object
+      description: 'Request structure for updating a network configuration.
+
+        Currently supports updating RPC URLs only. Can be extended to support other fields.'
+      properties:
+        rpc_urls:
+          type: array
+          items:
+            $ref: '#/components/schemas/RpcUrlEntry'
+          description: "List of RPC endpoint configurations for connecting to the network.\nSupports multiple formats:\n- Array of strings: `[\"https://rpc.example.com\"]` (defaults to weight 100)\n- Array of RpcConfig objects: `[{\"url\": \"https://rpc.example.com\", \"weight\": 100}]`\n- Mixed array: `[\"https://rpc1.com\", {\"url\": \"https://rpc2.com\", \"weight\": 100}]`\n  Must be non-empty and contain valid HTTP/HTTPS URLs if provided."
+          example:
+          - url: https://rpc.example.com
+            weight: 100
+      additionalProperties: false
     LogEntry:
       type: object
       required:
@@ -241,20 +425,6 @@ components:
           $ref: '#/components/schemas/LogLevel'
         message:
           type: string
-    PluginMetadata:
-      type: object
-      properties:
-        logs:
-          type:
-          - array
-          - 'null'
-          items:
-            $ref: '#/components/schemas/LogEntry'
-        traces:
-          type:
-          - array
-          - 'null'
-          items: {}
     ApiResponse_Vec_NetworkResponse:
       type: object
       required:
@@ -339,176 +509,6 @@ components:
           $ref: '#/components/schemas/PaginationMeta'
         success:
           type: boolean
-    ApiResponse_NetworkResponse:
-      type: object
-      required:
-      - success
-      properties:
-        data:
-          type: object
-          description: 'Network response model for API endpoints.
-
-
-            This flattens the internal NetworkRepoModel structure for API responses,
-
-            making network-type-specific fields available at the top level.'
-          required:
-          - id
-          - name
-          - network_type
-          properties:
-            average_blocktime_ms:
-              type: integer
-              format: int64
-              description: Estimated average time between blocks in milliseconds
-              minimum: 0
-            chain_id:
-              type: integer
-              format: int64
-              description: 'EVM-specific: Chain ID'
-              minimum: 0
-            explorer_urls:
-              type: array
-              items:
-                type: string
-              description: List of Explorer endpoint URLs
-            features:
-              type: array
-              items:
-                type: string
-              description: 'EVM-specific: Network features (e.g., "eip1559")'
-            horizon_url:
-              type: string
-              description: 'Stellar-specific: Horizon URL'
-            id:
-              type: string
-              description: Unique identifier composed of network_type and name, e.g., "evm:mainnet"
-            is_testnet:
-              type: boolean
-              description: Flag indicating if the network is a testnet
-            name:
-              type: string
-              description: Name of the network (e.g., "mainnet", "sepolia")
-            network_type:
-              $ref: '#/components/schemas/RelayerNetworkType'
-              description: Type of the network (EVM, Solana, Stellar)
-            passphrase:
-              type: string
-              description: 'Stellar-specific: Network passphrase'
-            required_confirmations:
-              type: integer
-              format: int64
-              description: 'EVM-specific: Required confirmations'
-              minimum: 0
-            rpc_urls:
-              type: array
-              items:
-                $ref: '#/components/schemas/RpcConfig'
-              description: List of RPC endpoint configurations
-            symbol:
-              type: string
-              description: 'EVM-specific: Native token symbol'
-            tags:
-              type: array
-              items:
-                type: string
-              description: List of arbitrary tags for categorizing or filtering networks
-        error:
-          type: string
-        metadata:
-          $ref: '#/components/schemas/PluginMetadata'
-        pagination:
-          $ref: '#/components/schemas/PaginationMeta'
-        success:
-          type: boolean
-    RpcConfig:
-      type: object
-      description: 'Configuration for an RPC endpoint.
-
-
-        This struct contains only persistent configuration (URL and weight).
-
-        Health metadata (failures, pause state) is managed separately via `RpcHealthStore`.'
-      required:
-      - url
-      - weight
-      properties:
-        url:
-          type: string
-          description: The RPC endpoint URL.
-        weight:
-          type: integer
-          format: int32
-          description: 'The weight of this endpoint in the weighted round-robin selection.
-
-            Defaults to [`DEFAULT_RPC_WEIGHT`]. Should be between 0 and 100.'
-          default: 100
-          maximum: 100
-          minimum: 0
-      example:
-        url: https://rpc.example.com
-        weight: 100
-    RpcUrlEntry:
-      oneOf:
-      - type: string
-        description: 'Simple string format (e.g., "https://rpc.example.com")
-
-          Defaults to weight 100.'
-      - $ref: '#/components/schemas/RpcConfig'
-        description: Extended object format with explicit weight
-      description: 'Schema-only type representing a flexible RPC URL entry.
-
-        Used for OpenAPI documentation to show that rpc_urls can accept
-
-        either strings or RpcConfig objects.
-
-
-        This is NOT used for actual deserialization - the custom deserializer
-
-        handles the conversion. This type exists solely for schema generation.'
-    PaginationMeta:
-      type: object
-      required:
-      - current_page
-      - per_page
-      - total_items
-      properties:
-        current_page:
-          type: integer
-          format: int32
-          minimum: 0
-        per_page:
-          type: integer
-          format: int32
-          minimum: 0
-        total_items:
-          type: integer
-          format: int64
-          minimum: 0
-    LogLevel:
-      type: string
-      enum:
-      - log
-      - info
-      - error
-      - warn
-      - debug
-      - result
-    UpdateNetworkRequest:
-      type: object
-      description: 'Request structure for updating a network configuration.
-
-        Currently supports updating RPC URLs only. Can be extended to support other fields.'
-      properties:
-        rpc_urls:
-          type: array
-          items:
-            $ref: '#/components/schemas/RpcUrlEntry'
-          description: "List of RPC endpoint configurations for connecting to the network.\nSupports multiple formats:\n- Array of strings: `[\"https://rpc.example.com\"]` (defaults to weight 100)\n- Array of RpcConfig objects: `[{\"url\": \"https://rpc.example.com\", \"weight\": 100}]`\n- Mixed array: `[\"https://rpc1.com\", {\"url\": \"https://rpc2.com\", \"weight\": 100}]`\n  Must be non-empty and contain valid HTTP/HTTPS URLs if provided."
-          example:
-          - url: https://rpc.example.com
-            weight: 100
-      additionalProperties: false
   securitySchemes:
     bearer_auth:
       type: http

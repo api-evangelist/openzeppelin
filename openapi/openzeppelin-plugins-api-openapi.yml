@@ -495,66 +495,57 @@ paths:
       - bearer_auth: []
 components:
   schemas:
-    ApiResponse_String:
+    UpdatePluginRequest:
       type: object
-      required:
-      - success
+      description: 'Request model for updating an existing plugin.
+
+        All fields are optional to allow partial updates.
+
+        Note: `id` and `path` are not updateable after creation.'
       properties:
-        data:
-          type: string
-        error:
-          type: string
-        metadata:
-          $ref: '#/components/schemas/PluginMetadata'
-        pagination:
-          $ref: '#/components/schemas/PaginationMeta'
-        success:
-          type: boolean
-    ApiResponse_PluginHandlerError:
-      type: object
-      required:
-      - success
-      properties:
-        data:
-          type: object
-          properties:
-            code:
-              type:
-              - string
-              - 'null'
-            details: {}
-        error:
-          type: string
-        metadata:
-          $ref: '#/components/schemas/PluginMetadata'
-        pagination:
-          $ref: '#/components/schemas/PaginationMeta'
-        success:
-          type: boolean
-    LogEntry:
-      type: object
-      required:
-      - level
-      - message
-      properties:
-        level:
-          $ref: '#/components/schemas/LogLevel'
-        message:
-          type: string
-    PluginMetadata:
-      type: object
-      properties:
-        logs:
+        allow_get_invocation:
           type:
-          - array
+          - boolean
           - 'null'
-          items:
-            $ref: '#/components/schemas/LogEntry'
-        traces:
+          description: Whether to allow GET requests to invoke plugin logic
+        config:
           type:
-          - array
+          - object
           - 'null'
-          items: {}
+          description: 'User-defined configuration accessible to the plugin (must be a JSON object)
+
+            Use `null` to clear the config'
+          additionalProperties: {}
+          propertyNames:
+            type: string
+        emit_logs:
+          type:
+          - boolean
+          - 'null'
+          description: Whether to include logs in the HTTP response
+        emit_traces:
+          type:
+          - boolean
+          - 'null'
+          description: Whether to include traces in the HTTP response
+        forward_logs:
+          type:
+          - boolean
+          - 'null'
+          description: Whether to forward plugin logs into the relayer's tracing output
+        raw_response:
+          type:
+          - boolean
+          - 'null'
+          description: Whether to return raw plugin response without ApiResponse wrapper
+        timeout:
+          type:
+          - integer
+          - 'null'
+          format: int64
+          description: Plugin timeout in seconds
+          minimum: 0
+      additionalProperties: false
     ApiResponse_PaginatedResult_PluginModel:
       type: object
       required:
@@ -636,6 +627,108 @@ components:
       properties:
         params:
           description: Plugin parameters. If not provided, the entire request body will be used as params.
+    ApiResponse_Value:
+      type: object
+      required:
+      - success
+      properties:
+        data: {}
+        error:
+          type: string
+        metadata:
+          $ref: '#/components/schemas/PluginMetadata'
+        pagination:
+          $ref: '#/components/schemas/PaginationMeta'
+        success:
+          type: boolean
+    PaginationMeta:
+      type: object
+      required:
+      - current_page
+      - per_page
+      - total_items
+      properties:
+        current_page:
+          type: integer
+          format: int32
+          minimum: 0
+        per_page:
+          type: integer
+          format: int32
+          minimum: 0
+        total_items:
+          type: integer
+          format: int64
+          minimum: 0
+    LogLevel:
+      type: string
+      enum:
+      - log
+      - info
+      - error
+      - warn
+      - debug
+      - result
+    PluginMetadata:
+      type: object
+      properties:
+        logs:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/LogEntry'
+        traces:
+          type:
+          - array
+          - 'null'
+          items: {}
+    ApiResponse_PluginHandlerError:
+      type: object
+      required:
+      - success
+      properties:
+        data:
+          type: object
+          properties:
+            code:
+              type:
+              - string
+              - 'null'
+            details: {}
+        error:
+          type: string
+        metadata:
+          $ref: '#/components/schemas/PluginMetadata'
+        pagination:
+          $ref: '#/components/schemas/PaginationMeta'
+        success:
+          type: boolean
+    ApiResponse_String:
+      type: object
+      required:
+      - success
+      properties:
+        data:
+          type: string
+        error:
+          type: string
+        metadata:
+          $ref: '#/components/schemas/PluginMetadata'
+        pagination:
+          $ref: '#/components/schemas/PaginationMeta'
+        success:
+          type: boolean
+    LogEntry:
+      type: object
+      required:
+      - level
+      - message
+      properties:
+        level:
+          $ref: '#/components/schemas/LogLevel'
+        message:
+          type: string
     ApiResponse_PluginModel:
       type: object
       required:
@@ -690,99 +783,6 @@ components:
           $ref: '#/components/schemas/PaginationMeta'
         success:
           type: boolean
-    ApiResponse_Value:
-      type: object
-      required:
-      - success
-      properties:
-        data: {}
-        error:
-          type: string
-        metadata:
-          $ref: '#/components/schemas/PluginMetadata'
-        pagination:
-          $ref: '#/components/schemas/PaginationMeta'
-        success:
-          type: boolean
-    UpdatePluginRequest:
-      type: object
-      description: 'Request model for updating an existing plugin.
-
-        All fields are optional to allow partial updates.
-
-        Note: `id` and `path` are not updateable after creation.'
-      properties:
-        allow_get_invocation:
-          type:
-          - boolean
-          - 'null'
-          description: Whether to allow GET requests to invoke plugin logic
-        config:
-          type:
-          - object
-          - 'null'
-          description: 'User-defined configuration accessible to the plugin (must be a JSON object)
-
-            Use `null` to clear the config'
-          additionalProperties: {}
-          propertyNames:
-            type: string
-        emit_logs:
-          type:
-          - boolean
-          - 'null'
-          description: Whether to include logs in the HTTP response
-        emit_traces:
-          type:
-          - boolean
-          - 'null'
-          description: Whether to include traces in the HTTP response
-        forward_logs:
-          type:
-          - boolean
-          - 'null'
-          description: Whether to forward plugin logs into the relayer's tracing output
-        raw_response:
-          type:
-          - boolean
-          - 'null'
-          description: Whether to return raw plugin response without ApiResponse wrapper
-        timeout:
-          type:
-          - integer
-          - 'null'
-          format: int64
-          description: Plugin timeout in seconds
-          minimum: 0
-      additionalProperties: false
-    PaginationMeta:
-      type: object
-      required:
-      - current_page
-      - per_page
-      - total_items
-      properties:
-        current_page:
-          type: integer
-          format: int32
-          minimum: 0
-        per_page:
-          type: integer
-          format: int32
-          minimum: 0
-        total_items:
-          type: integer
-          format: int64
-          minimum: 0
-    LogLevel:
-      type: string
-      enum:
-      - log
-      - info
-      - error
-      - warn
-      - debug
-      - result
   securitySchemes:
     bearer_auth:
       type: http
