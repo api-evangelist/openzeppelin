@@ -415,6 +415,12 @@ apis:
   - type: Configuration
     url: https://docs.openzeppelin.com/relayer/configuration
 common:
+  - type: Plans
+    url: plans/plans.yml
+  - type: RateLimits
+    url: rate-limits/rate-limits.yml
+  - type: FinOps
+    url: finops/finops.yml
   - type: IssueTracker
     url: https://github.com/OpenZeppelin/openzeppelin-monitor/issues
   - type: Releases
