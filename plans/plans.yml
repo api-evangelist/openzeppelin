@@ -1,3 +1,7 @@
+# Provenance stamped 2026-10-07 (roadmap#943): written by an API Evangelist sweep (undated — the file carries no date and git cannot supply one), not
+# harvested from the provider. `method: generated` so the economics campaign may replace it with a
+# dated, verbatim transcription; every figure below is unverified until it does.
+method: generated
 name: OpenZeppelin Plans
 description: >
   OpenZeppelin Defender offered three subscription tiers for its hosted security
@@ -104,3 +108,34 @@ plans:
         limit: 100
         unit: concurrent requests
         notes: Configurable via RELAYER_CONCURRENCY_LIMIT
+x-canonical:
+  generated: '2026-10-08'
+  vocabulary: all/0-working/economics/plans-canonical.yml
+  models:
+  - free
+  units: []
+  plans:
+  - name: Builder
+    access: other
+    model: free
+    model_how: derived
+    units: []
+    periods: []
+  - name: Professional
+    access: other
+    model: unstated
+    model_how: derived
+    units: []
+    periods: []
+  - name: Enterprise
+    access: other
+    model: unstated
+    model_how: derived
+    units: []
+    periods: []
+  - name: Open Source (Self-Hosted)
+    access: other
+    model: free
+    model_how: derived
+    units: []
+    periods: []
