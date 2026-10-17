@@ -334,23 +334,40 @@ paths:
       - bearer_auth: []
 components:
   schemas:
-    GoogleCloudKmsSignerRequestConfig:
+    LogEntry:
       type: object
-      description: Google Cloud KMS signer configuration for API requests
       required:
-      - service_account
-      - key
+      - level
+      - message
       properties:
-        key:
-          $ref: '#/components/schemas/GoogleCloudKmsSignerKeyRequestConfig'
-        service_account:
-          $ref: '#/components/schemas/GoogleCloudKmsSignerServiceAccountRequestConfig'
-      additionalProperties: false
-    SignerUpdateRequest:
+        level:
+          $ref: '#/components/schemas/LogLevel'
+        message:
+          type: string
+    VaultTransitSignerRequestConfig:
       type: object
-      description: 'Request model for updating an existing signer
-
-        At the moment, we don''t allow updating signers'
+      description: Vault Transit signer configuration for API requests
+      required:
+      - key_name
+      - address
+      - role_id
+      - secret_id
+      - pubkey
+      properties:
+        address:
+          type: string
+        key_name:
+          type: string
+        mount_point:
+          type: string
+        namespace:
+          type: string
+        pubkey:
+          type: string
+        role_id:
+          type: string
+        secret_id:
+          type: string
       additionalProperties: false
     GoogleCloudKmsSignerServiceAccountResponseConfig:
       type: object
@@ -377,15 +394,56 @@ components:
           type: string
         universe_domain:
           type: string
-    LogLevel:
+    SignerTypeRequest:
       type: string
+      description: Signer type enum for API requests
       enum:
-      - log
-      - info
-      - error
-      - warn
-      - debug
-      - result
+      - plain
+      - aws_kms
+      - vault
+      - vault_transit
+      - turnkey
+      - cdp
+      - google_cloud_kms
+    SignerConfigRequest:
+      oneOf:
+      - $ref: '#/components/schemas/LocalSignerRequestConfig'
+      - $ref: '#/components/schemas/AwsKmsSignerRequestConfig'
+      - $ref: '#/components/schemas/VaultSignerRequestConfig'
+      - $ref: '#/components/schemas/VaultTransitSignerRequestConfig'
+      - $ref: '#/components/schemas/TurnkeySignerRequestConfig'
+      - $ref: '#/components/schemas/CdpSignerRequestConfig'
+      - $ref: '#/components/schemas/GoogleCloudKmsSignerRequestConfig'
+      description: Signer configuration enum for API requests (without type discriminator)
+    ApiResponse_SignerResponse:
+      type: object
+      required:
+      - success
+      properties:
+        data:
+          type: object
+          required:
+          - id
+          - type
+          - config
+          properties:
+            config:
+              $ref: '#/components/schemas/SignerConfigResponse'
+              description: Non-secret configuration details
+            id:
+              type: string
+              description: The unique identifier of the signer
+            type:
+              $ref: '#/components/schemas/SignerType'
+              description: The type of signer (local, aws_kms, google_cloud_kms, vault, etc.)
+        error:
+          type: string
+        metadata:
+          $ref: '#/components/schemas/PluginMetadata'
+        pagination:
+          $ref: '#/components/schemas/PaginationMeta'
+        success:
+          type: boolean
     VaultSignerRequestConfig:
       type: object
       description: Vault signer configuration for API requests
@@ -407,6 +465,104 @@ components:
           type: string
         secret_id:
           type: string
+      additionalProperties: false
+    SignerUpdateRequest:
+      type: object
+      description: 'Request model for updating an existing signer
+
+        At the moment, we don''t allow updating signers'
+      additionalProperties: false
+    GoogleCloudKmsSignerKeyResponseConfig:
+      type: object
+      required:
+      - location
+      - key_ring_id
+      - key_id
+      - key_version
+      properties:
+        key_id:
+          type: string
+        key_ring_id:
+          type: string
+        key_version:
+          type: integer
+          format: int32
+          minimum: 0
+        location:
+          type: string
+    LocalSignerRequestConfig:
+      type: object
+      description: Local signer configuration for API requests
+      required:
+      - key
+      properties:
+        key:
+          type: string
+      additionalProperties: false
+    LogLevel:
+      type: string
+      enum:
+      - log
+      - info
+      - error
+      - warn
+      - debug
+      - result
+    CdpSignerRequestConfig:
+      type: object
+      description: CDP signer configuration for API requests
+      required:
+      - api_key_id
+      - api_key_secret
+      - wallet_secret
+      - account_address
+      properties:
+        account_address:
+          type: string
+        api_key_id:
+          type: string
+        api_key_secret:
+          type: string
+        wallet_secret:
+          type: string
+      additionalProperties: false
+    TurnkeySignerRequestConfig:
+      type: object
+      description: Turnkey signer configuration for API requests
+      required:
+      - api_public_key
+      - api_private_key
+      - organization_id
+      - private_key_id
+      - public_key
+      properties:
+        api_private_key:
+          type: string
+        api_public_key:
+          type: string
+        organization_id:
+          type: string
+        private_key_id:
+          type: string
+        public_key:
+          type: string
+      additionalProperties: false
+    SignerCreateRequest:
+      type: object
+      description: Request model for creating a new signer
+      required:
+      - type
+      - config
+      properties:
+        config:
+          $ref: '#/components/schemas/SignerConfigRequest'
+          description: The signer configuration
+        id:
+          type: string
+          description: Optional ID - if not provided, a UUID will be generated
+        type:
+          $ref: '#/components/schemas/SignerTypeRequest'
+          description: The type of signer
       additionalProperties: false
     GoogleCloudKmsSignerServiceAccountRequestConfig:
       type: object
@@ -444,6 +600,62 @@ components:
         universe_domain:
           type: string
       additionalProperties: false
+    ApiResponse_Vec_SignerResponse:
+      type: object
+      required:
+      - success
+      properties:
+        data:
+          type: array
+          items:
+            type: object
+            required:
+            - id
+            - type
+            - config
+            properties:
+              config:
+                $ref: '#/components/schemas/SignerConfigResponse'
+                description: Non-secret configuration details
+              id:
+                type: string
+                description: The unique identifier of the signer
+              type:
+                $ref: '#/components/schemas/SignerType'
+                description: The type of signer (local, aws_kms, google_cloud_kms, vault, etc.)
+        error:
+          type: string
+        metadata:
+          $ref: '#/components/schemas/PluginMetadata'
+        pagination:
+          $ref: '#/components/schemas/PaginationMeta'
+        success:
+          type: boolean
+    PluginMetadata:
+      type: object
+      properties:
+        logs:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/LogEntry'
+        traces:
+          type:
+          - array
+          - 'null'
+          items: {}
+    SignerType:
+      type: string
+      description: Signer type enum used for validation and API responses
+      enum:
+      - local
+      - aws_kms
+      - google_cloud_kms
+      - vault
+      - vault_transit
+      - turnkey
+      - cdp
     SignerConfigResponse:
       oneOf:
       - type: object
@@ -530,31 +742,6 @@ components:
       description: 'Signer configuration response
 
         Does not include sensitive information like private keys'
-    VaultTransitSignerRequestConfig:
-      type: object
-      description: Vault Transit signer configuration for API requests
-      required:
-      - key_name
-      - address
-      - role_id
-      - secret_id
-      - pubkey
-      properties:
-        address:
-          type: string
-        key_name:
-          type: string
-        mount_point:
-          type: string
-        namespace:
-          type: string
-        pubkey:
-          type: string
-        role_id:
-          type: string
-        secret_id:
-          type: string
-      additionalProperties: false
     GoogleCloudKmsSignerKeyRequestConfig:
       type: object
       description: Google Cloud KMS key configuration for API requests
@@ -575,163 +762,6 @@ components:
         location:
           type: string
       additionalProperties: false
-    GoogleCloudKmsSignerKeyResponseConfig:
-      type: object
-      required:
-      - location
-      - key_ring_id
-      - key_id
-      - key_version
-      properties:
-        key_id:
-          type: string
-        key_ring_id:
-          type: string
-        key_version:
-          type: integer
-          format: int32
-          minimum: 0
-        location:
-          type: string
-    LogEntry:
-      type: object
-      required:
-      - level
-      - message
-      properties:
-        level:
-          $ref: '#/components/schemas/LogLevel'
-        message:
-          type: string
-    SignerCreateRequest:
-      type: object
-      description: Request model for creating a new signer
-      required:
-      - type
-      - config
-      properties:
-        config:
-          $ref: '#/components/schemas/SignerConfigRequest'
-          description: The signer configuration
-        id:
-          type: string
-          description: Optional ID - if not provided, a UUID will be generated
-        type:
-          $ref: '#/components/schemas/SignerTypeRequest'
-          description: The type of signer
-      additionalProperties: false
-    ApiResponse_SignerResponse:
-      type: object
-      required:
-      - success
-      properties:
-        data:
-          type: object
-          required:
-          - id
-          - type
-          - config
-          properties:
-            config:
-              $ref: '#/components/schemas/SignerConfigResponse'
-              description: Non-secret configuration details
-            id:
-              type: string
-              description: The unique identifier of the signer
-            type:
-              $ref: '#/components/schemas/SignerType'
-              description: The type of signer (local, aws_kms, google_cloud_kms, vault, etc.)
-        error:
-          type: string
-        metadata:
-          $ref: '#/components/schemas/PluginMetadata'
-        pagination:
-          $ref: '#/components/schemas/PaginationMeta'
-        success:
-          type: boolean
-    SignerTypeRequest:
-      type: string
-      description: Signer type enum for API requests
-      enum:
-      - plain
-      - aws_kms
-      - vault
-      - vault_transit
-      - turnkey
-      - cdp
-      - google_cloud_kms
-    LocalSignerRequestConfig:
-      type: object
-      description: Local signer configuration for API requests
-      required:
-      - key
-      properties:
-        key:
-          type: string
-      additionalProperties: false
-    ApiResponse_Vec_SignerResponse:
-      type: object
-      required:
-      - success
-      properties:
-        data:
-          type: array
-          items:
-            type: object
-            required:
-            - id
-            - type
-            - config
-            properties:
-              config:
-                $ref: '#/components/schemas/SignerConfigResponse'
-                description: Non-secret configuration details
-              id:
-                type: string
-                description: The unique identifier of the signer
-              type:
-                $ref: '#/components/schemas/SignerType'
-                description: The type of signer (local, aws_kms, google_cloud_kms, vault, etc.)
-        error:
-          type: string
-        metadata:
-          $ref: '#/components/schemas/PluginMetadata'
-        pagination:
-          $ref: '#/components/schemas/PaginationMeta'
-        success:
-          type: boolean
-    TurnkeySignerRequestConfig:
-      type: object
-      description: Turnkey signer configuration for API requests
-      required:
-      - api_public_key
-      - api_private_key
-      - organization_id
-      - private_key_id
-      - public_key
-      properties:
-        api_private_key:
-          type: string
-        api_public_key:
-          type: string
-        organization_id:
-          type: string
-        private_key_id:
-          type: string
-        public_key:
-          type: string
-      additionalProperties: false
-    SignerType:
-      type: string
-      description: Signer type enum used for validation and API responses
-      enum:
-      - local
-      - aws_kms
-      - google_cloud_kms
-      - vault
-      - vault_transit
-      - turnkey
-      - cdp
     AwsKmsSignerRequestConfig:
       type: object
       description: AWS KMS signer configuration for API requests
@@ -744,6 +774,33 @@ components:
         region:
           type: string
       additionalProperties: false
+    GoogleCloudKmsSignerRequestConfig:
+      type: object
+      description: Google Cloud KMS signer configuration for API requests
+      required:
+      - service_account
+      - key
+      properties:
+        key:
+          $ref: '#/components/schemas/GoogleCloudKmsSignerKeyRequestConfig'
+        service_account:
+          $ref: '#/components/schemas/GoogleCloudKmsSignerServiceAccountRequestConfig'
+      additionalProperties: false
+    ApiResponse_String:
+      type: object
+      required:
+      - success
+      properties:
+        data:
+          type: string
+        error:
+          type: string
+        metadata:
+          $ref: '#/components/schemas/PluginMetadata'
+        pagination:
+          $ref: '#/components/schemas/PaginationMeta'
+        success:
+          type: boolean
     PaginationMeta:
       type: object
       required:
@@ -763,63 +820,6 @@ components:
           type: integer
           format: int64
           minimum: 0
-    CdpSignerRequestConfig:
-      type: object
-      description: CDP signer configuration for API requests
-      required:
-      - api_key_id
-      - api_key_secret
-      - wallet_secret
-      - account_address
-      properties:
-        account_address:
-          type: string
-        api_key_id:
-          type: string
-        api_key_secret:
-          type: string
-        wallet_secret:
-          type: string
-      additionalProperties: false
-    PluginMetadata:
-      type: object
-      properties:
-        logs:
-          type:
-          - array
-          - 'null'
-          items:
-            $ref: '#/components/schemas/LogEntry'
-        traces:
-          type:
-          - array
-          - 'null'
-          items: {}
-    ApiResponse_String:
-      type: object
-      required:
-      - success
-      properties:
-        data:
-          type: string
-        error:
-          type: string
-        metadata:
-          $ref: '#/components/schemas/PluginMetadata'
-        pagination:
-          $ref: '#/components/schemas/PaginationMeta'
-        success:
-          type: boolean
-    SignerConfigRequest:
-      oneOf:
-      - $ref: '#/components/schemas/LocalSignerRequestConfig'
-      - $ref: '#/components/schemas/AwsKmsSignerRequestConfig'
-      - $ref: '#/components/schemas/VaultSignerRequestConfig'
-      - $ref: '#/components/schemas/VaultTransitSignerRequestConfig'
-      - $ref: '#/components/schemas/TurnkeySignerRequestConfig'
-      - $ref: '#/components/schemas/CdpSignerRequestConfig'
-      - $ref: '#/components/schemas/GoogleCloudKmsSignerRequestConfig'
-      description: Signer configuration enum for API requests (without type discriminator)
   securitySchemes:
     bearer_auth:
       type: http
