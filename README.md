@@ -64,81 +64,164 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-OpenZeppelin is a Web3 security platform providing tools for secure smart contract development, deployment, monitoring, and automation. The platform includes OpenZeppelin Contracts (the industry-standard Solidity library), Defender (a hosted developer security platform), the open-source OpenZeppelin Relayer for transaction relay infrastructure, and OpenZeppelin Monitor for real-time on-chain activity detection.
+OpenZeppelin is a Web3 security platform providing tools for secure smart contract development, deployment, monitoring, and automation. The platform includes OpenZeppelin Contracts (battle-tested Solidity libraries), Defender (a developer security platform for auditing, deploying, and operating blockchain applications), the open-source OpenZeppelin Relayer for transaction relay infrastructure across EVM, Solana, and Stellar networks, and OpenZeppelin Monitor for real-time on-chain activity detection and alerting. Defender is sunsetting on July 1, 2026, with users migrating to the open-source Relayer and Monitor projects.
 
-**Note:** OpenZeppelin Defender (the hosted platform) is sunsetting on July 1, 2026. New sign-ups were disabled on June 30, 2025. Users are migrating to the open-source Relayer and Monitor projects.
+**Areas:** Web3 · Smart Contracts · Blockchain · Security · Ethereum · DeFi · Solidity · Relayer · Monitoring · Auditing
 
-## APIs
+## OpenZeppelin on APIs.io
 
-### OpenZeppelin Defender API
-Programmatic access to the Defender security platform for managing smart contract deployments, transaction relaying, automated monitoring, and governance proposals.
+Everything profiled for OpenZeppelin is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/openzeppelin/](https://apis.io/providers/openzeppelin/)** — or go straight to one of the APIs or properties below.
 
-- **Base URL:** `https://defender-api.openzeppelin.com/v2`
-- **Auth:** JWT tokens via SRP protocol (60-minute expiry)
-- **Docs:** https://docs.openzeppelin.com/defender/sdk
-- **API Reference:** https://www.api-docs.defender.openzeppelin.com/
+### APIs (9)
 
-**Modules:** Deploy, Proposal, Relay, Action, Monitor, Admin, Networks, Relay-Signer
+- [OpenZeppelin Monitor API](https://apis.io/apis/openzeppelin/openzeppelin-monitor-api/) — OpenZeppelin Monitor is an open-source blockchain monitoring service that watches for specific on-chain activities and triggers notifications based on…
+- [OpenZeppelin Contracts API Reference](https://apis.io/apis/openzeppelin/openzeppelin-contracts-api-reference/) — The OpenZeppelin Contracts library provides a comprehensive collection of modular, reusable, and secure Solidity smart contracts for building decentralized…
+- [OpenZeppelin Health API](https://apis.io/apis/openzeppelin/openzeppelin-health-api/) — Health is responsible for showing the health of the relayers.
+- [OpenZeppelin Metrics API](https://apis.io/apis/openzeppelin/openzeppelin-metrics-api/) — Metrics are responsible for showing the metrics related to the relayers.
+- [OpenZeppelin Networks API](https://apis.io/apis/openzeppelin/openzeppelin-networks-api/) — Networks represent blockchain network configurations including RPC endpoints and network-specific settings.
+- [OpenZeppelin Notifications API](https://apis.io/apis/openzeppelin/openzeppelin-notifications-api/) — Notifications are responsible for showing the notifications related to the relayers.
+- [OpenZeppelin Plugins API](https://apis.io/apis/openzeppelin/openzeppelin-plugins-api/) — Plugins are TypeScript functions that can be used to extend the OpenZeppelin Relayer API functionality.
+- [OpenZeppelin Relayers API](https://apis.io/apis/openzeppelin/openzeppelin-relayers-api/) — Relayers are the core components of the OpenZeppelin Relayer API. They are responsible for executing transactions on behalf of users and providing a secure…
+- [OpenZeppelin Signers API](https://apis.io/apis/openzeppelin/openzeppelin-signers-api/) — Signers are responsible for signing the transactions related to the relayers.
 
-### OpenZeppelin Relayer API (Open Source)
-Self-hosted transaction relay infrastructure for EVM, Solana, and Stellar networks.
+### Published properties
 
-- **Base URL:** `http://localhost:8080/api/v1`
-- **Auth:** API key (minimum 32 characters)
-- **Docs:** https://docs.openzeppelin.com/relayer
-- **GitHub:** https://github.com/OpenZeppelin/openzeppelin-relayer
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
 
-**Endpoints:** Relayers (15 ops), Plugins, Notifications, Signers, Metrics, Health
+#### Agentic access (1)
 
-### OpenZeppelin Monitor (Open Source)
-Self-hosted blockchain monitoring service for real-time on-chain event detection and alerting.
+Which operations an agent can call, which act, and which need a human in the loop.
 
-- **Metrics Port:** 8081
-- **Docs:** https://docs.openzeppelin.com/monitor
-- **GitHub:** https://github.com/OpenZeppelin/openzeppelin-monitor
+- [Openzeppelin Agentic Access](https://apis.io/agentic-access/openzeppelin/openzeppelin-agentic-access/)
 
-**Notifications:** Slack, Discord, Email, Telegram, Webhooks, Custom Scripts
+#### JSON Schema (3)
 
-### OpenZeppelin Contracts API Reference
-Solidity library providing secure, modular smart contract components.
+The data models the API reads and writes.
 
-- **Docs:** https://docs.openzeppelin.com/contracts
-- **API Reference:** https://docs.openzeppelin.com/contracts/5.x/api/access
-- **GitHub:** https://github.com/OpenZeppelin/openzeppelin-contracts
-- **NPM:** `@openzeppelin/contracts`
+- [NotificationResponse](https://apis.io/schemas/openzeppelin/notification/)
+- [RelayerResponse](https://apis.io/schemas/openzeppelin/relayer/)
+- [TransactionResponse](https://apis.io/schemas/openzeppelin/transaction/)
 
-## Resources
+#### JSON-LD (1)
 
-| Resource | URL |
-|----------|-----|
-| Website | https://www.openzeppelin.com/ |
-| Documentation | https://docs.openzeppelin.com/ |
-| GitHub | https://github.com/OpenZeppelin |
-| Forum | https://forum.openzeppelin.com/ |
-| Blog | https://www.openzeppelin.com/blog |
-| Discord | https://discord.openzeppelin.com/ |
-| Status | https://status.openzeppelin.com/ |
-| Migration Guide | https://docs.openzeppelin.com/defender/migration |
+Linked-data contexts for the provider's vocabulary.
 
-## Rate Limits
+- [Openzeppelin Context](https://apis.io/jsonld/openzeppelin/openzeppelin/)
 
-| Limit | Value | Scope |
-|-------|-------|-------|
-| Defender API requests | 100 req/sec (burst 300) | Per API key |
-| Relayer transactions | 50 tx/min recommended | Per relayer |
-| JWT token lifetime | 60 minutes | Per session |
-| Relayer (OSS) requests | 100 req/sec (configurable) | Per instance |
-| Relayer (OSS) concurrency | 100 concurrent (configurable) | Per instance |
+#### Examples (3)
 
-## Plans
+Example requests and responses.
 
-| Plan | Cost | Status |
-|------|------|--------|
-| Builder (Defender) | Free | Legacy (sunset 2026-07-01) |
-| Professional (Defender) | Contact sales | Legacy (sunset 2026-07-01) |
-| Enterprise (Defender) | Custom | Legacy (sunset 2026-07-01) |
-| Open Source (Self-Hosted) | Free + infra costs | Active |
+- [Create Relayer](https://apis.io/examples/openzeppelin/create-relayer/)
+- [Health Check](https://apis.io/examples/openzeppelin/health-check/)
+- [Send Transaction](https://apis.io/examples/openzeppelin/send-transaction/)
 
----
+#### Collections (7)
 
-*Maintained by [API Evangelist](https://apievangelist.com)*
+Postman and Open Collection request collections.
+
+- [OpenZeppelin Relayer Health API](https://apis.io/collections/openzeppelin/open-openzeppelin-health-api/)
+- [OpenZeppelin Relayer Health Metrics API](https://apis.io/collections/openzeppelin/open-openzeppelin-metrics-api/)
+- [OpenZeppelin Relayer Health Networks API](https://apis.io/collections/openzeppelin/open-openzeppelin-networks-api/)
+- [OpenZeppelin Relayer Health Notifications API](https://apis.io/collections/openzeppelin/open-openzeppelin-notifications-api/)
+- [OpenZeppelin Relayer Health Plugins API](https://apis.io/collections/openzeppelin/open-openzeppelin-plugins-api/)
+- [OpenZeppelin Relayer Health Relayers API](https://apis.io/collections/openzeppelin/open-openzeppelin-relayers-api/)
+- [OpenZeppelin Relayer Health Signers API](https://apis.io/collections/openzeppelin/open-openzeppelin-signers-api/)
+
+#### Governance rules (1)
+
+Spectral rulesets for the provider's contracts.
+
+- [OpenZeppelin — jsonschema rules](https://apis.io/rules/openzeppelin/openzeppelin-jsonschema-spectral-rules/)
+
+#### Security (3)
+
+Authentication, trust centre, and vulnerability disclosure.
+
+- [Openzeppelin Authentication](https://apis.io/security/openzeppelin/openzeppelin-authentication/)
+- [Openzeppelin Domain Security](https://apis.io/security/openzeppelin/openzeppelin-domain-security/)
+- [Openzeppelin Trust Center](https://apis.io/security/openzeppelin/openzeppelin-trust-center/)
+
+#### Plans and pricing (1)
+
+Published plans, tiers and prices.
+
+- [Plans](https://apis.io/plans/openzeppelin/plans/)
+
+#### Rate limits (1)
+
+Published request limits.
+
+- [Rate Limits](https://apis.io/rate-limits/openzeppelin/rate-limits/)
+
+#### FinOps (1)
+
+What the API costs to run, by operation.
+
+- [Finops](https://apis.io/finops/openzeppelin/finops/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
+
+- [Website](https://www.openzeppelin.com/)
+- [Documentation](https://docs.openzeppelin.com/)
+- [Blog](https://www.openzeppelin.com/blog)
+- [Security](https://www.openzeppelin.com/security-audits)
+- [Terms of service](https://www.openzeppelin.com/tos)
+- [Privacy policy](https://www.openzeppelin.com/privacy)
+
+## API Evangelist rating
+
+**Kin Score 52.8** — developing · rubric 0.25.0 · scored 2026-10-23
+
+| Facet | Score |
+|---|---|
+| Discoverability | 58.0 |
+| Contract quality | 53.4 |
+| Contract governance | 9.8 |
+| Operational transparency | 39.5 |
+| Developer ergonomics | 52.4 |
+| Access clarity | 50.0 |
+
+**Agent readiness 32.5** — agent-ready
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | derived (partial credit) |
+| Reversibility Documented | documented (partial credit) |
+| MCP Server | — |
+| Auth Clarity | bearer (partial credit) |
+| Idempotency | — |
+| Error Semantics | verified |
+| OpenAPI Examples | verified |
+| Rate Limit Signal | derived (partial credit) |
+| Event Surface Described | — |
+| Agent Skills | — |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+| Pagination Ratio | partial |
+| Operation Distinctiveness | distinct |
+
+**Regulatory alignment 29.4** — Horizontal (data, software, accessibility, platform)
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/openzeppelin/](https://apis.io/providers/openzeppelin/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for OpenZeppelin: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/openzeppelin/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
